@@ -1,4 +1,4 @@
-const app = require('./index');
+const app = require('./app');
 
 app.listen(3000, function (err) {if (err) 
   return console.log(err);
