@@ -16,17 +16,16 @@ app.use(json());
 
 app.use('/api', apiRouter);
 
-app.use((err, req, res) => {
+// need to have 'next' as a param or error-handling doesn't work, even if linting doesn't like it!
+app.use((err, req, res, next) => {
   if (res.status !== 500) {
-    return res.status(err.status).send({
-      error: err.error
-    });
+    return res.status(err.status).send({error: err.message});
   }
 });
 
 // catch all error handler - any 500 errors
-app.use(function (err, req, res) {
-  return res.status(500).send({error: err.error});
+app.use(function (err, req, res, next) {
+  return res.status(500).send({error: err.message});
 });
 
 module.exports = app;
