@@ -6,5 +6,9 @@
     {
         "title": "Cats",
         "slug": "cats"
+    },
+    {
+        "title": "Prince",
+        "slug": "prince"
     }
 ]
