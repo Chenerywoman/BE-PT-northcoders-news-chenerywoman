@@ -57,22 +57,21 @@ describe('API endpoints', () => {
                 .get(`/api/topics/${topicDocs[2]._id}/articles`)
                 .then(res => {
                     expect(res.status).to.equal(404);
-                    expect(res.body).to.eql({ error: `there are no articles for the topic with id ${topicDocs[2]._id}`});
+                    expect(res.body).to.eql({ error: `there are no articles for the topic with id ${topicDocs[2]._id}` });
                     expect(res.body.error).to.equal(`there are no articles for the topic with id ${topicDocs[2]._id}`);
                 });
         });
-        // it('POSTs a new article to api/topics:topic_id/articles', () => {
-        //     console.log(topicDocs[2]._id)
-        //     return request
-        //     .post(`/api/topics/${topicDocs[2]._id}/articles`)
-        //     .set('Accept', 'application/json')
-        //     .send(JSON.stringify({title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', belongs_to: topicDocs[2]._id, created_by: userDocs[2]._id}))
-        //     .then(res => {
-        //     expect(res.status).to.equal(201);
-        //     expect(res.body).to.eql({ });
-        //     expect(res.body.error).to.equal('unable to post article');
-        //     });
-        //     });
+        it('POSTs a new article to api/topics:topic_id/articles', () => {
+            return request
+                .post(`/api/topics/${topicDocs[2]._id}/articles`)
+                .set('Accept', 'application/json')
+                .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', belongs_to: topicDocs[2]._id, created_by: userDocs[1]._id })
+                .then(res => {
+                    expect(res.status).to.equal(201);
+                    expect(res.body).to.eql({});
+                    expect(res.body.error).to.equal('unable to post article');
+                });
+        });
     });
     describe('API requests to api/articles', () => {
         it('GETs all articles from api/articles', () => {
@@ -117,32 +116,60 @@ describe('API endpoints', () => {
             return request
                 .get(`/api/articles/${articleDocs[4]._id}/comments`)
                 .then(res => {
-                    expect(res.body).to.eql({error:`there are no comments for the article with id ${articleDocs[4]._id}`});
+                    expect(res.body).to.eql({ error: `there are no comments for the article with id ${articleDocs[4]._id}` });
                     expect(res.body.error).to.equal(`there are no comments for the article with id ${articleDocs[4]._id}`);
                 });
         });
-
-    //     "_id": "583412975905f02e4c8e6e24",
-    //     "body": "Gizso ni zaatuur tikbu inene hujo guvzem jigdaw howa dab ri cuktop bizuviwo faug deprog ubtuc tikonbem. Gugoed ogiim puju ro ilzarhar tol riru terom iwcab raw wa refzej fiwuwezu owu.",
-    //     "belongs_to": "583412925905f02e4c8e6e00",
-    //     "created_by": "grumpy19",
-    //     "votes": 547,
-    //     "created_at": 1479631179000,
-    //     "__v": 0
-    //   },
-
-
-
-
-
-
-
-
-
-
-
     });
+    describe('API requests to api/users', () => {
+        it('GETs all users from api/users', () => {
+            return request
+                .get('/api/users')
+                .then(res => {
+                    expect(res.body.users).to.be.an('array');
+                    expect(res.body.users.length).to.equal(2);
+                    expect(res.body.users[0]).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
+                    expect(res.body.users[0].username).to.equal('butter_bridge');
+                });
+        });
+        it('GETs a user by username from api/users/username/:username', () => {
+            return request
+                .get(`/api/users/username/${userDocs[1].username}`)
+                .then(res => {
+                    expect(res.body.user).to.be.an('object');
+                    expect(res.body.user).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
+                    expect(res.body.user.username).to.equal('dedekind561');
+                });
+        });
+        it('returns an appropriate error message if non-existent username inputted', () => {
+            return request
+                .get('/api/users/username/3339999222')
+                .then(res => {
+                    expect(res.status).to.equal(404);
+                    expect(res.body).to.eql({ error: 'username does not exist' });
+                    expect(res.body.error).to.equal('username does not exist');
+                });
+            })
+            it('GETs a user by id from api/users:id', () => {
+                return request
+                    .get(`/api/users/${userDocs[1].id}`)
+                    .then(res => {
+                        expect(res.body.user).to.be.an('object');
+                        expect(res.body.user).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
+                        expect(res.body.user.username).to.equal('dedekind561');
+                    });
+            });
+            it('returns an appropriate error message if non-existent id inputted', () => {
+                return request
+                    .get('/api/users/3339999222')
+                    .then(res => {
+                        expect(res.status).to.equal(400);
+                        expect(res.body).to.eql({ error: 'please input a valid user id' });
+                        expect(res.body.error).to.equal('please input a valid user id');
+                    });
+            });
 
+        });
 
 
 
