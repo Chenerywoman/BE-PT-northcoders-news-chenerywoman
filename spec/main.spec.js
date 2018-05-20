@@ -57,8 +57,8 @@ describe('API endpoints', () => {
                 .get(`/api/topics/${topicDocs[2]._id}/articles`)
                 .then(res => {
                     expect(res.status).to.equal(404);
-                    expect(res.body).to.eql({ error: 'unable to find articles for this topic' });
-                    expect(res.body.error).to.equal('unable to find articles for this topic');
+                    expect(res.body).to.eql({ error: `there are no articles for the topic with id ${topicDocs[2]._id}`});
+                    expect(res.body.error).to.equal(`there are no articles for the topic with id ${topicDocs[2]._id}`);
                 });
         });
         // it('POSTs a new article to api/topics:topic_id/articles', () => {
@@ -80,7 +80,7 @@ describe('API endpoints', () => {
                 .get('/api/articles')
                 .then(res => {
                     expect(res.body.articles).to.be.an('array');
-                    expect(res.body.articles.length).to.equal(4);
+                    expect(res.body.articles.length).to.equal(5);
                     expect(res.body.articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
                     expect(res.body.articles[3].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
                 });
@@ -103,6 +103,38 @@ describe('API endpoints', () => {
                     expect(res.body.error).to.equal('please input a valid article id');
                 });
         });
+        it('GETs all comments for an article from api/articles/:article_id/comments', () => {
+            return request
+                .get(`/api/articles/${articleDocs[2]._id}/comments`)
+                .then(res => {
+                    expect(res.body.comments).to.be.an('array');
+                    expect(res.body.comments.length).to.equal(2);
+                    expect(res.body.comments[0]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.comments[0].body).to.equal('The owls are not what they seem.');
+                });
+        });
+        it('returns an appropriate response if there are no comments for an article', () => {
+            return request
+                .get(`/api/articles/${articleDocs[4]._id}/comments`)
+                .then(res => {
+                    expect(res.body).to.eql({error:`there are no comments for the article with id ${articleDocs[4]._id}`});
+                    expect(res.body.error).to.equal(`there are no comments for the article with id ${articleDocs[4]._id}`);
+                });
+        });
+
+    //     "_id": "583412975905f02e4c8e6e24",
+    //     "body": "Gizso ni zaatuur tikbu inene hujo guvzem jigdaw howa dab ri cuktop bizuviwo faug deprog ubtuc tikonbem. Gugoed ogiim puju ro ilzarhar tol riru terom iwcab raw wa refzej fiwuwezu owu.",
+    //     "belongs_to": "583412925905f02e4c8e6e00",
+    //     "created_by": "grumpy19",
+    //     "votes": 547,
+    //     "created_at": 1479631179000,
+    //     "__v": 0
+    //   },
+
+
+
+
+
 
 
 
