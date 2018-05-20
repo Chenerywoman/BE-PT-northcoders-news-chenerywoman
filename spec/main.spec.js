@@ -182,6 +182,34 @@ describe('API endpoints', () => {
                    
                 });
         });
+        it('makes a PUT request to increase the votes to api/articles:article_id', () => {
+            return request
+                .put(`/api/articles/${articleDocs[2]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({vote: 'up'})
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.updated_article).to.be.an('object');
+                    expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(res.body.updated_article.votes).to.equal(1);
+                });
+        });
+        it('makes a PUT request to decrease the votes to api/articles:article_id', () => {
+            return request
+                .put(`/api/articles/${articleDocs[2]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({vote: 'down'})
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.updated_article).to.be.an('object');
+                    expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(res.body.updated_article.votes).to.equal(0);
+                });
+        });
 
 
 
