@@ -210,7 +210,45 @@ describe('API endpoints', () => {
                     expect(res.body.updated_article.votes).to.equal(0);
                 });
         });
-
+        it('responds with an appropriate error to a PUT request if an invalid user id is passed as in the request body', () => {
+            return request
+                .put('/api/articles/voldemort')
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({vote: 'down'})
+                // supertest expect  - key on promise object
+                .expect(400)
+                .then(res => {
+                    expect(res.body).to.eql({ error: 'voldemort is not a valid article id'});
+                    expect(res.body.error).to.equal('voldemort is not a valid article id');
+                });
+        });
+        it('responds with an appropriate error to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
+            return request
+                .put(`/api/articles/${articleDocs[2]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({vote: 'banana'})
+                // supertest expect  - key on promise object
+                .expect(400)
+                .then(res => {
+                    expect(res.body).to.eql({ error: 'query string parameter "vote" must be "up" or "down"'});
+                    expect(res.body.error).to.equal('query string parameter "vote" must be "up" or "down"');
+                });
+        });
+        it('responds with an appropriate error to a PUT request if the query string parameter is not "vote"', () => {
+            return request
+                .put(`/api/articles/${articleDocs[2]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({july: 'up'})
+                // supertest expect  - key on promise object
+                .expect(400)
+                .then(res => {
+                    expect(res.body).to.eql({ error: 'query string parameter "vote" must be "up" or "down"'});
+                    expect(res.body.error).to.equal('query string parameter "vote" must be "up" or "down"');
+                });
+        });
 
 
 
