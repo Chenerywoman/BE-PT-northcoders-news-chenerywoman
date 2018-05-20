@@ -16,7 +16,7 @@ app.use(json());
 
 app.use('/api', apiRouter);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   if (res.status !== 500) {
     return res.status(err.status).send({
       error: err.error
@@ -25,8 +25,8 @@ app.use((err, req, res, next) => {
 });
 
 // catch all error handler - any 500 errors
-app.use(function (err, req, res, next) {
-  return res.status(500).send('server error');
+app.use(function (err, req, res) {
+  return res.status(500).send({error: err.error});
 });
 
 module.exports = app;
