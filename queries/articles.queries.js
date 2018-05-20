@@ -1,10 +1,10 @@
-const {Article, Comment} = require('../models');
+const {Article} = require('../models');
 
 exports.findAllArticles = () => Article.find();
 
 exports.findArticleById = (id) => Article.findById(id);
 
-exports.findCommentsForArticle = (belongs_to) => Comment.find({belongs_to});
+exports.createArticle = (title, body, belongs_to, created_by) => Article.create({title, body, belongs_to, created_by});
 
 // article
 // {   "_id": "583412925905f02e4c8e6e00", CREATED BY mongoDB
