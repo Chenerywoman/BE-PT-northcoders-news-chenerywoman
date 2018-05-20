@@ -43,7 +43,7 @@ describe('API endpoints', () => {
                     expect(res.body.articles[0].title).to.equal('Living in the shadow of a great man');
                 });
         });
-        it('returns an appropriate error message if non-existent topic id inputted as a parameter', () => {
+        it('returns an appropriate error message if an invalid topic id inputted as a parameter', () => {
             return request
                 .get('/api/topics/3339999222/articles')
                 .then(res => {
@@ -65,13 +65,37 @@ describe('API endpoints', () => {
             return request
                 .post(`/api/topics/${topicDocs[2]._id}/articles`)
                 .set('Accept', 'application/json')
-                .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', belongs_to: topicDocs[2]._id, created_by: userDocs[1]._id })
+                .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: userDocs[1]._id })
                 .then(res => {
                     expect(res.status).to.equal(201);
                     expect(res.body.new_article).to.be.an('object');
                     expect(res.body.new_article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
                     expect(res.body.new_article.title).to.equal('Why I love Penguins');
                     expect(res.body.new_article.body).to.equal('blah, blah, Penguins, blah, more penguins, love them');
+                });
+        });
+        it('responds with an appropriate error to a POST request if an invalid topic id is passed as a parameter', () => {
+            return request
+                .post('/api/topics/banana/articles')
+                .set('Accept', 'application/json')
+                .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: userDocs[1]._id })
+                .then(res => {
+                    expect(res.status).to.equal(400);
+                    expect(res.body).to.eql({ error: 'banana is not a valid topic id'});
+                    expect(res.body.error).to.equal('banana is not a valid topic id');
+                   
+                });
+        });
+        it('responds with an appropriate error to a POST request if an invalid user id is passed as in the request body', () => {
+            return request
+                .post(`/api/topics/${topicDocs[2]._id}/articles`)
+                .set('Accept', 'application/json')
+                .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: 'matilda' })
+                .then(res => {
+                    expect(res.status).to.equal(400);
+                    expect(res.body).to.eql({ error: 'matilda is not a valid user id'});
+                    expect(res.body.error).to.equal('matilda is not a valid user id');
+                   
                 });
         });
     });
@@ -163,7 +187,7 @@ describe('API endpoints', () => {
             });
             it('returns an appropriate error message if non-existent id inputted', () => {
                 return request
-                    .get('/api/users/3339999222')
+                    .get('/api/users/banana')
                     .then(res => {
                         expect(res.status).to.equal(400);
                         expect(res.body).to.eql({ error: 'please input a valid user id' });

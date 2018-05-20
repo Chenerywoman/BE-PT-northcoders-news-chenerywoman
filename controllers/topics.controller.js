@@ -23,14 +23,17 @@ exports.getArticlesByTopicId = (req, res, next) => {
 }; 
 
 exports.postNewArticleToTopic = (req, res, next) => {
-  Promise.all([findTopicById(req.params.topic_id), findUserById(req.body.created_by)])
+  return findTopicById(req.params.topic_id)
+  .then(topic => {
+    return Promise.all([topic, findUserById(req.body.created_by)]);
+  })
   .then(([topic, user]) => {
-    return createArticle(req.body.title, req.body.body, topic._id, user._id)
+     return createArticle(req.body.title, req.body.body, topic._id, user._id);
   })
   .then(article => res.status(201).send({new_article: article}))
   .catch((err) => { 
-    console.log('err', err)
-    if (err.name === 'CastError') return next({status: 400, message: 'please input a valid topic id'});
-    else return next({status: 500, message: 'server error'})
+    if (err.name === 'CastError' && err.model.modelName === 'topics') return next({ status: 400,  message: `${req.params.topic_id} is not a valid topic id`});
+    else if (err.name === 'CastError' && err.model.modelName === 'users') return next({ status: 400,  message: `${req.body.created_by} is not a valid user id`});
+    else return next({status: 500, message: 'server error'});
     });
   };
