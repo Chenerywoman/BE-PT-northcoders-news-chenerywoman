@@ -146,6 +146,46 @@ describe('API endpoints', () => {
                     expect(res.body.error).to.equal(`there are no comments for the article with id ${articleDocs[4]._id}`);
                 });
         });
+        it('POSTs a new comment to api/articles:article_id/comments', () => {
+            return request
+                .post(`/api/articles/${articleDocs[2]._id}/comments`)
+                .set('Accept', 'application/json')
+                .send({ body: 'personally I\'d rather have a nice cup of tea', created_by: userDocs[1]._id })
+                .then(res => {
+                    expect(res.status).to.equal(201);
+                    expect(res.body.new_comment).to.be.an('object');
+                    expect(res.body.new_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.new_comment.body).to.equal('personally I\'d rather have a nice cup of tea');
+                });
+        });
+        it('responds with an appropriate error to a POST request if an invalid article id is passed as a parameter', () => {
+            return request
+                .post('/api/articles/bubbly21/comments')
+                .set('Accept', 'application/json')
+                .send({ body: 'blah, blah, I am very impressed, blah.....', created_by: userDocs[1]._id })
+                .then(res => {
+                    expect(res.status).to.equal(400);
+                    expect(res.body).to.eql({ error: 'bubbly21 is not a valid article id'});
+                    expect(res.body.error).to.equal('bubbly21 is not a valid article id');
+                   
+                });
+        });
+        it('responds with an appropriate error to a POST request if an invalid user id is passed as in the request body', () => {
+            return request
+                .post(`/api/articles/${topicDocs[2]._id}/comments`)
+                .set('Accept', 'application/json')
+                .send({  body: 'must get my wand mended', created_by: 'Harry Potter' })
+                .then(res => {
+                    expect(res.status).to.equal(400);
+                    expect(res.body).to.eql({ error: 'Harry Potter is not a valid user id'});
+                    expect(res.body.error).to.equal('Harry Potter is not a valid user id');
+                   
+                });
+        });
+
+
+
+
     });
     describe('API requests to api/users', () => {
         it('GETs all users from api/users', () => {
