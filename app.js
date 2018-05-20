@@ -24,7 +24,7 @@ app.use((err, req, res, next) => {
 });
 
 // catch all error handler - any 500 errors
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res, next) { 
   return res.status(500).send({error: err.message});
 });
 
