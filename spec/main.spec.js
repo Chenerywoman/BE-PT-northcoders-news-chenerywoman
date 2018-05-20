@@ -61,18 +61,57 @@ describe('API endpoints', () => {
                     expect(res.body.error).to.equal('unable to find articles for this topic');
                 });
         });
+        // it('POSTs a new article to api/topics:topic_id/articles', () => {
+        //     console.log(topicDocs[2]._id)
+        //     return request
+        //     .post(`/api/topics/${topicDocs[2]._id}/articles`)
+        //     .set('Accept', 'application/json')
+        //     .send(JSON.stringify({title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', belongs_to: topicDocs[2]._id, created_by: userDocs[2]._id}))
+        //     .then(res => {
+        //     expect(res.status).to.equal(201);
+        //     expect(res.body).to.eql({ });
+        //     expect(res.body.error).to.equal('unable to post article');
+        //     });
+        //     });
     });
-});
+    describe('API requests to api/articles', () => {
+        it('GETs all articles from api/articles', () => {
+            return request
+                .get('/api/articles')
+                .then(res => {
+                    expect(res.body.articles).to.be.an('array');
+                    expect(res.body.articles.length).to.equal(4);
+                    expect(res.body.articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
+                    expect(res.body.articles[3].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
+                });
+        });
+        it('GETs an article by id from api/articles:article_id', () => {
+            return request
+                .get(`/api/articles/${articleDocs[1]._id}`)
+                .then(res => {
+                    expect(res.body.article).to.be.an('object');
+                    expect(res.body.article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
+                    expect(res.body.article.title).to.equal('7 inspirational thought leaders from Manchester UK');
+                });
+        });
+        it('returns an appropriate error message if non-existent article id inputted', () => {
+            return request
+                .get('/api/articles/3339999222')
+                .then(res => {
+                    expect(res.status).to.equal(400);
+                    expect(res.body).to.eql({ error: 'please input a valid article id' });
+                    expect(res.body.error).to.equal('please input a valid article id');
+                });
+        });
 
-// article
-// {   "_id": "583412925905f02e4c8e6e00", CREATED BY mongoDB
-//     "title": "Living in the shadow of a  great man",
-//     "topic": "mitch", //  NEED TO CHANGE TO A TOPIC IDn & CHANGE NAME TO BELONGS TO
-//     "created_by": "butter_bridge", // NEED TO CHANGE TO A USER ID
-//     "body": "I find this existence challenging"
-//      "belongs_to NEED TO ADD A NEW FIELD & put topic id
-//      "__v": 0 - added by mongoosedb
-//   }
-//     "votes": 77,  DEFAULT in SCHEMA IS 0
-//     "comments": 13  ADD THIS
-//   },
+
+
+
+
+
+    });
+
+
+
+
+});
