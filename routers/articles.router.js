@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAllArticles, getArticlesById, getCommentsforArticle, postNewCommentToArticle,changeArticleVotes} = require('../controllers/articles.controller');
+const { getAllArticles, getArticlesById, getCommentsforArticle, postNewCommentToArticle, changeArticleVotes} = require('../controllers/articles.controller');
 
 router.get('/', getAllArticles);
 
