@@ -50,17 +50,12 @@ exports.getCommentsforArticle = (req, res, next) => {
   exports.changeArticleVotes = (req, res, next) => {
     return findArticleById(req.params.article_id)
     .then(article => {
-      const {vote} = req.query;
-      if (vote !== 'up' && vote !== 'down') throw {status: 400, message: 'query string parameter "vote" must be "up" or "down"'}
-      else if (vote === 'up') article.votes = article.votes + 1;
-      else if (vote === 'down') article.votes = article.votes - 1;
-      return updateArticleVote(article._id, article.votes);
+      // n.b. if invalid key or value put into query string parameter, just returns the original article unchanged
+      return updateArticleVote(article._id, req.query.vote);
       })
-    .then(article => findArticleById(article._id))
     .then(article => res.status(200).send({updated_article: article}))
     .catch((err) => { 
       if (err.name === 'CastError' && err.model.modelName === 'articles') return next({ status: 400,  message: `${req.params.article_id} is not a valid article id`});
-      else if (err.status === 400) return next(err);
       else return next({status: 500, message: 'server error'});
       });
 };
