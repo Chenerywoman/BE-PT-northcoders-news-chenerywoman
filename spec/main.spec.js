@@ -135,8 +135,10 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.comments).to.be.an('array');
                     expect(res.body.comments.length).to.equal(2);
-                    expect(res.body.comments[0]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.comments[0]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
                     expect(res.body.comments[0].body).to.equal('The owls are not what they seem.');
+                    expect(res.body.comments[0].created_by).to.have.keys('_id', 'username');
+                    expect(res.body.comments[0].belongs_to).to.have.keys('_id', 'title');
                 });
         });
         it('returns an appropriate response if there are no comments for an article', () => {
