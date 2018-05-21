@@ -4,9 +4,10 @@ const topicsRouter = require('./topics.router');
 const articlesRouter = require('./articles.router');
 const commentsRouter = require('./comments.router');
 const usersRouter = require('./users.router.js');
+const path = require('path');
 
 router.get('/', (req, res, next) => {
-    return res.send('in api route');
+    return res.sendFile(path.join(__dirname, '..' ,'public/index.html'));
 });
 // GET /api - serves an HTML page with documentation for all the available endpoints
 

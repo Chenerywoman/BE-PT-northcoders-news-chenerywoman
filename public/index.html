@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h1>NorthCoders News: API routes</h1>
+    <p>
+
+        <h2>api/topics</h2>
+        <ul>
+            <li>GET /api/topics gets all the topics</li>
+            <li>GET /api/topics/:topic_id/articles returns all the articles for a certain topic</li>
+            <li>POST /api/topics/:topic_id/articles Add a new article to a topic. This route requires a JSON body with title
+                and body key value pairs e.g: { "title": "this is my new article title", "body": "This is my new article
+                content"}</li>
+        </ul>
+        <h2>api/articles</h2>
+        <ul>
+            <li>GET /api/articles Returns all the articles</li>
+            <li>GET /api/articles/:article_id Get an individual article</li>
+            <li>GET /api/articles/:article_id/comments Get all the comments for a individual article</li>
+            <li>POST /api/articles/:article_id/comments Add a new comment to an article. This route requires a JSON body with
+                a comment key and value pair e.g: {"comment": "This is my new comment"}</li>
+            <li>PUT /api/articles/:article_id Increment or Decrement the votes of an article by one. This route requires a vote
+                query of 'up' or 'down' e.g: /api/articles/:article_id?vote=up</li>
+        </ul>
+        <h2>api/comments</h2>
+        <ul>
+            <li>GET /api/comments gets all the comments</li>
+            <li>GET /api/comments/:comment_id gets a comment by its id</li>
+            <li>PUT /api/comments/:comment_id Increment or Decrement the votes of a comment by one. This route requires a vote
+                query of 'up' or 'down' e.g: /api/comments/:comment_id?vote=down</li>
+            <li>DELETE /api/comments/:comment_id Deletes a comment</li>
+        </ul>
+        <h2>api/users</h2>
+        <ul>
+            <li>GET /api/users/:username Returns a JSON object with the profile data for the specified user.</li>
+        </ul>
+    </p>
+</body>
+
+</html>

@@ -14,6 +14,8 @@ mongoose.connect(url);
 
 app.use(json());
 
+app.use(express.static('public'));
+
 app.use('/api', apiRouter);
 
 // need to have 'next' as a param or error-handling doesn't work, even if linting doesn't like it!
