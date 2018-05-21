@@ -10,6 +10,7 @@ const expect = require('chai').expect;
 const { seed } = require('../seed/seed');
 // this brings in the test data, which are passed as arguments to the seed function below
 const { articles, comments, topics, users } = require('../seed/testData');
+const {findCommentById} = require('../queries/comments.queries');
 
 describe('API endpoints', () => {
     let topicDocs, userDocs, articleDocs, commentDocs
@@ -377,6 +378,30 @@ describe('API endpoints', () => {
                         expect(res.body.updated_comment.votes).to.eql(commentDocs[2].votes);
                     });
             });
+            it('DELETEs a comment when receiving a DELETE request to api/comments/:comment_id', () => {
+                return request
+                    .del(`/api/comments/${commentDocs[2]._id}`)
+                    .set('Accept', 'application/json')
+                    // supertest expect  - key on promise object
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body.deleted_comment).to.be.an('object');
+                        expect(res.body.deleted_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                        expect(res.body.deleted_comment.votes).to.equal(20);
+                        expect(res.body.deleted_comment.body).to.equal(commentDocs[2].body);
+                        expect(res.body.deleted_comment.votes).to.eql(commentDocs[2].votes); 
+                    }).then(() => {
+                        // try to delete again to see if worked the first time
+                        return request
+                        .delete(`/api/comments/${commentDocs[2]._id}`)
+                        .set('Accept', 'application/json')
+                        // supertest expect  - key on promise object
+                        .expect(404)
+                        .then(res => {
+                            expect(res.body).to.eql({error: `comment with id ${commentDocs[2]._id} does not exist`});
+                        });
+                    });
         });
+    });
 
 });
