@@ -12,4 +12,3 @@ mongoose.connect(url)
 // once the seed function has run and the data has been added to the database, disconnect by calling the disconnect method of mongoose
 .then(() => mongoose.disconnect())
 .catch(err => console.log(err));
-q
