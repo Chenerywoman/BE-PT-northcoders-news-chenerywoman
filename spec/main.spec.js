@@ -116,7 +116,7 @@ describe('API endpoints', () => {
                 .get(`/api/articles/${articleDocs[1]._id}`)
                 .then(res => {
                     expect(res.body.article).to.be.an('object');
-                    expect(res.body.article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
+                    expect(res.body.article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'comments');
                     expect(res.body.article.title).to.equal('7 inspirational thought leaders from Manchester UK');
                 });
         });
@@ -313,7 +313,9 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.comments).to.be.an('array');
                     expect(res.body.comments.length).to.equal(9);
-                    expect(res.body.comments[3]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.comments[3]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
+                    expect(res.body.comments[3].created_by).to.have.keys('_id', 'username');
+                    expect(res.body.comments[3].belongs_to).to.have.keys('_id', 'title');
                 });
         });
         it('GETs a comment by it\'s id from api/comments:comment_id', () => {
@@ -332,7 +334,7 @@ describe('API endpoints', () => {
         it('responds with an appropriate error to a GET request with an invalid comment id', () => {
             return request
                 .get('/api/comments/lucyliu21')
-                .set('Accept', 'application/json')
+                .set('Accept', 'application/json')q
                 // supertest expect  - key on promise object
                 .expect(400)
                 .then(res => {
