@@ -223,30 +223,34 @@ describe('API endpoints', () => {
                     expect(res.body.error).to.equal('voldemort is not a valid article id');
                 });
         });
-        it('responds with an appropriate error to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
+        it('responds with an unchanged article to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
             return request
                 .put(`/api/articles/${articleDocs[2]._id}`)
                 .set('Accept', 'application/json')
                 // query string parameter
                 .query({vote: 'banana'})
                 // supertest expect  - key on promise object
-                .expect(400)
+                .expect(200)
                 .then(res => {
-                    expect(res.body).to.eql({ error: 'query string parameter "vote" must be "up" or "down"'});
-                    expect(res.body.error).to.equal('query string parameter "vote" must be "up" or "down"');
+                    expect(res.body.updated_article).to.be.an('object');
+                    expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(res.body.updated_article.votes).to.equal(0);
+                    expect(res.body.updated_article.votes).to.equal(articleDocs[2].votes);
                 });
         });
-        it('responds with an appropriate error to a PUT request if the query string parameter is not "vote"', () => {
+        it('responds with an unchanged article to a PUT request if the query string parameter is not "vote"', () => {
             return request
-                .put(`/api/articles/${articleDocs[2]._id}`)
+                .put(`/api/articles/${articleDocs[4]._id}`)
                 .set('Accept', 'application/json')
                 // query string parameter
                 .query({july: 'up'})
                 // supertest expect  - key on promise object
-                .expect(400)
+                .expect(200)
                 .then(res => {
-                    expect(res.body).to.eql({ error: 'query string parameter "vote" must be "up" or "down"'});
-                    expect(res.body.error).to.equal('query string parameter "vote" must be "up" or "down"');
+                    expect(res.body.updated_article).to.be.an('object');
+                    expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(res.body.updated_article.votes).to.equal(0);
+                    expect(res.body.updated_article.votes).to.equal(articleDocs[4].votes);
                 });
         });
     });
