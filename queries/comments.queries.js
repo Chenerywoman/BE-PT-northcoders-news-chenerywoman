@@ -1,6 +1,6 @@
 const {Comment} = require('../models');
 
-exports.findComments = () => Comment.find();
+exports.findComments = () => Comment.find().select('-__v').populate('belongs_to', ['_id', 'title']).populate('created_by', ['_id', 'username']);
 
 exports.findCommentById = (_id) => Comment.findById(_id);
 
@@ -18,3 +18,5 @@ exports.updateCommentVote  = (_id, vote) => {
 };
 
 exports.deleteComment = (_id) => Comment.findByIdAndRemove(_id);
+
+exports.countCommentsForArticle = (belongs_to) => Comment.count({belongs_to});
