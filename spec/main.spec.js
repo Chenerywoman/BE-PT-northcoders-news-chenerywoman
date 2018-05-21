@@ -249,9 +249,6 @@ describe('API endpoints', () => {
                     expect(res.body.error).to.equal('query string parameter "vote" must be "up" or "down"');
                 });
         });
-
-
-
     });
     describe('API requests to api/users', () => {
         it('GETs all users from api/users', () => {
@@ -298,6 +295,37 @@ describe('API endpoints', () => {
                         expect(res.status).to.equal(400);
                         expect(res.body).to.eql({ error: 'please input a valid user id' });
                         expect(res.body.error).to.equal('please input a valid user id');
+                    });
+            });
+
+        });
+        describe('API requests to api/comments', () => {
+            it('makes a PUT request to increase the votes to api/comments:comment_id', () => {
+                return request
+                    .put(`/api/comments/${commentDocs[6]._id}`)
+                    .set('Accept', 'application/json')
+                    // query string parameter
+                    .query({vote: 'up'})
+                    // supertest expect  - key on promise object
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body.updated_comment).to.be.an('object');
+                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                        expect(res.body.updated_comment.votes).to.equal(17);
+                    });
+            });
+            it('makes a PUT request to decrease the votes to api/comments:comment_id', () => {
+                return request
+                    .put(`/api/comments/${commentDocs[6]._id}`)
+                    .set('Accept', 'application/json')
+                    // query string parameter
+                    .query({vote: 'down'})
+                    // supertest expect  - key on promise object
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body.updated_comment).to.be.an('object');
+                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                        expect(res.body.updated_comment.votes).to.equal(16);
                     });
             });
 
