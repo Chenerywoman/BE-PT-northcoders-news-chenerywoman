@@ -118,8 +118,10 @@ describe('API endpoints', () => {
                 .get(`/api/articles/${articleDocs[1]._id}`)
                 .then(res => {
                     expect(res.body.article).to.be.an('object');
-                    expect(res.body.article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'comments');
+                    expect(res.body.article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', 'comments');
                     expect(res.body.article.title).to.equal('7 inspirational thought leaders from Manchester UK');
+                    expect(res.body.article.created_by).to.have.keys('_id', 'username');
+                    expect(res.body.article.belongs_to).to.have.keys('_id', 'title');
                 });
         });
         it('returns an appropriate error message if non-existent article id inputted', () => {
