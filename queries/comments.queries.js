@@ -1,10 +1,10 @@
 const {Comment} = require('../models');
-
+                                            // select removes the __v key, belongs_to is populated with the _id & title (of the article), created_by is populated with the _id & username (of the user)
 exports.findComments = () => Comment.find().select('-__v').populate('belongs_to', ['_id', 'title']).populate('created_by', ['_id', 'username']);
 
-exports.findCommentById = (_id) => Comment.findById(_id);
+exports.findCommentById = (_id) => Comment.findById(_id).select('-__v').populate('belongs_to', ['_id', 'title']).populate('created_by', ['_id', 'username']);
 
-exports.findCommentsForArticle = (belongs_to) => Comment.find({belongs_to});
+exports.findCommentsForArticle = (belongs_to) => Comment.find({belongs_to})
 
 exports.createComment = (body, belongs_to, created_by) => Comment.create({body, belongs_to, created_by});
 
