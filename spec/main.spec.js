@@ -194,7 +194,7 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.updated_article).to.be.an('object');
                     expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
-                    expect(res.body.updated_article.votes).to.equal(1);
+                    expect(res.body.updated_article.votes).to.equal(articleDocs[2].votes + 1);
                 });
         });
         it('makes a PUT request to decrease the votes to api/articles:article_id', () => {
@@ -208,7 +208,7 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.updated_article).to.be.an('object');
                     expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
-                    expect(res.body.updated_article.votes).to.equal(0);
+                    expect(res.body.updated_article.votes).to.equal(articleDocs[2].votes);
                 });
         });
         it('responds with an appropriate error to a PUT request if an invalid user id is passed as in the request body', () => {
@@ -235,7 +235,6 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.updated_article).to.be.an('object');
                     expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
-                    expect(res.body.updated_article.votes).to.equal(0);
                     expect(res.body.updated_article.votes).to.equal(articleDocs[2].votes);
                 });
         });
@@ -250,7 +249,6 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.updated_article).to.be.an('object');
                     expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
-                    expect(res.body.updated_article.votes).to.equal(0);
                     expect(res.body.updated_article.votes).to.equal(articleDocs[4].votes);
                 });
         });
