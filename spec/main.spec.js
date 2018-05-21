@@ -10,7 +10,6 @@ const expect = require('chai').expect;
 const { seed } = require('../seed/seed');
 // this brings in the test data, which are passed as arguments to the seed function below
 const { articles, comments, topics, users } = require('../seed/testData');
-const {findCommentById} = require('../queries/comments.queries');
 
 describe('API endpoints', () => {
     let topicDocs, userDocs, articleDocs, commentDocs
@@ -82,9 +81,9 @@ describe('API endpoints', () => {
                 .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: userDocs[1]._id })
                 .then(res => {
                     expect(res.status).to.equal(400);
-                    expect(res.body).to.eql({ error: 'banana is not a valid topic id'});
+                    expect(res.body).to.eql({ error: 'banana is not a valid topic id' });
                     expect(res.body.error).to.equal('banana is not a valid topic id');
-                   
+
                 });
         });
         it('responds with an appropriate error to a POST request if an invalid user id is passed as in the request body', () => {
@@ -94,12 +93,13 @@ describe('API endpoints', () => {
                 .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: 'matilda' })
                 .then(res => {
                     expect(res.status).to.equal(400);
-                    expect(res.body).to.eql({ error: 'matilda is not a valid user id'});
+                    expect(res.body).to.eql({ error: 'matilda is not a valid user id' });
                     expect(res.body.error).to.equal('matilda is not a valid user id');
-                   
+
                 });
         });
     });
+
     describe('API requests to api/articles', () => {
         it('GETs all articles from api/articles', () => {
             return request
@@ -166,21 +166,21 @@ describe('API endpoints', () => {
                 .send({ body: 'blah, blah, I am very impressed, blah.....', created_by: userDocs[1]._id })
                 .then(res => {
                     expect(res.status).to.equal(400);
-                    expect(res.body).to.eql({ error: 'bubbly21 is not a valid article id'});
+                    expect(res.body).to.eql({ error: 'bubbly21 is not a valid article id' });
                     expect(res.body.error).to.equal('bubbly21 is not a valid article id');
-                   
+
                 });
         });
         it('responds with an appropriate error to a POST request if an invalid user id is passed as in the request body', () => {
             return request
                 .post(`/api/articles/${topicDocs[2]._id}/comments`)
                 .set('Accept', 'application/json')
-                .send({  body: 'must get my wand mended', created_by: 'Harry Potter' })
+                .send({ body: 'must get my wand mended', created_by: 'Harry Potter' })
                 .then(res => {
                     expect(res.status).to.equal(400);
-                    expect(res.body).to.eql({ error: 'Harry Potter is not a valid user id'});
+                    expect(res.body).to.eql({ error: 'Harry Potter is not a valid user id' });
                     expect(res.body.error).to.equal('Harry Potter is not a valid user id');
-                   
+
                 });
         });
         it('makes a PUT request to increase the votes to api/articles:article_id', () => {
@@ -188,7 +188,7 @@ describe('API endpoints', () => {
                 .put(`/api/articles/${articleDocs[2]._id}`)
                 .set('Accept', 'application/json')
                 // query string parameter
-                .query({vote: 'up'})
+                .query({ vote: 'up' })
                 // supertest expect  - key on promise object
                 .expect(200)
                 .then(res => {
@@ -202,7 +202,7 @@ describe('API endpoints', () => {
                 .put(`/api/articles/${articleDocs[2]._id}`)
                 .set('Accept', 'application/json')
                 // query string parameter
-                .query({vote: 'down'})
+                .query({ vote: 'down' })
                 // supertest expect  - key on promise object
                 .expect(200)
                 .then(res => {
@@ -216,11 +216,11 @@ describe('API endpoints', () => {
                 .put('/api/articles/voldemort')
                 .set('Accept', 'application/json')
                 // query string parameter
-                .query({vote: 'down'})
+                .query({ vote: 'down' })
                 // supertest expect  - key on promise object
                 .expect(400)
                 .then(res => {
-                    expect(res.body).to.eql({ error: 'voldemort is not a valid article id'});
+                    expect(res.body).to.eql({ error: 'voldemort is not a valid article id' });
                     expect(res.body.error).to.equal('voldemort is not a valid article id');
                 });
         });
@@ -229,7 +229,7 @@ describe('API endpoints', () => {
                 .put(`/api/articles/${articleDocs[2]._id}`)
                 .set('Accept', 'application/json')
                 // query string parameter
-                .query({vote: 'banana'})
+                .query({ vote: 'banana' })
                 // supertest expect  - key on promise object
                 .expect(200)
                 .then(res => {
@@ -244,7 +244,7 @@ describe('API endpoints', () => {
                 .put(`/api/articles/${articleDocs[4]._id}`)
                 .set('Accept', 'application/json')
                 // query string parameter
-                .query({july: 'up'})
+                .query({ july: 'up' })
                 // supertest expect  - key on promise object
                 .expect(200)
                 .then(res => {
@@ -255,6 +255,7 @@ describe('API endpoints', () => {
                 });
         });
     });
+
     describe('API requests to api/users', () => {
         it('GETs all users from api/users', () => {
             return request
@@ -283,124 +284,172 @@ describe('API endpoints', () => {
                     expect(res.body).to.eql({ error: 'username does not exist' });
                     expect(res.body.error).to.equal('username does not exist');
                 });
-            })
-            it('GETs a user by id from api/users:id', () => {
-                return request
-                    .get(`/api/users/${userDocs[1].id}`)
-                    .then(res => {
-                        expect(res.body.user).to.be.an('object');
-                        expect(res.body.user).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
-                        expect(res.body.user.username).to.equal('dedekind561');
-                    });
-            });
-            it('returns an appropriate error message if non-existent id inputted', () => {
-                return request
-                    .get('/api/users/banana')
-                    .then(res => {
-                        expect(res.status).to.equal(400);
-                        expect(res.body).to.eql({ error: 'please input a valid user id' });
-                        expect(res.body.error).to.equal('please input a valid user id');
-                    });
-            });
-
+        })
+        it('GETs a user by id from api/users:id', () => {
+            return request
+                .get(`/api/users/${userDocs[1].id}`)
+                .then(res => {
+                    expect(res.body.user).to.be.an('object');
+                    expect(res.body.user).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
+                    expect(res.body.user.username).to.equal('dedekind561');
+                });
         });
-        describe('API requests to api/comments', () => {
-            it('makes a PUT request to increase the votes to api/comments:comment_id', () => {
-                return request
-                    .put(`/api/comments/${commentDocs[6]._id}`)
-                    .set('Accept', 'application/json')
-                    // query string parameter
-                    .query({vote: 'up'})
-                    // supertest expect  - key on promise object
-                    .expect(200)
-                    .then(res => {
-                        expect(res.body.updated_comment).to.be.an('object');
-                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                        expect(res.body.updated_comment.votes).to.equal(17);
-                    });
-            });
-            it('makes a PUT request to decrease the votes to api/comments:comment_id', () => {
-                return request
-                    .put(`/api/comments/${commentDocs[6]._id}`)
-                    .set('Accept', 'application/json')
-                    // query string parameter
-                    .query({vote: 'down'})
-                    // supertest expect  - key on promise object
-                    .expect(200)
-                    .then(res => {
-                        expect(res.body.updated_comment).to.be.an('object');
-                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                        expect(res.body.updated_comment.votes).to.equal(16);
-                    });
-            });
-            it('responds with an appropriate error to a PUT request if an invalid user id is passed as in the request body', () => {
-                return request
-                    .put('/api/comments/lucyliu21')
-                    .set('Accept', 'application/json')
-                    // query string parameter
-                    .query({vote: 'down'})
-                    // supertest expect  - key on promise object
-                    .expect(400)
-                    .then(res => {
-                        expect(res.body).to.eql({ error: 'lucyliu21 is not a valid comment id'});
-                        expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
-                    });
-            });
-            it('responds with the unchanged comment to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
-                return request
-                    .put(`/api/comments/${commentDocs[6]._id}`)
-                    .set('Accept', 'application/json')
-                    // query string parameter
-                    .query({vote: 'banana'})
-                    // supertest expect  - key on promise object
-                    .expect(200)
-                    .then(res => {
-                        expect(res.body.updated_comment).to.be.an('object');
-                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                        expect(res.body.updated_comment.votes).to.equal(16);
-                        expect(res.body.updated_comment.body).to.equal(commentDocs[6].body);
-                        expect(res.body.updated_comment.votes).to.eql(commentDocs[6].votes);
-                    });
-            });
-            it('responds with the unchanged comment to a PUT request if the query string parameter is not "vote"', () => {
-                return request
-                    .put(`/api/comments/${commentDocs[2]._id}`)
-                    .set('Accept', 'application/json')
-                    // query string parameter
-                    .query({july: 'up'})
-                    // supertest expect  - key on promise object
-                    .expect(200)
-                    .then(res => {
-                        expect(res.body.updated_comment).to.be.an('object');
-                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                        expect(res.body.updated_comment.votes).to.equal(20);
-                        expect(res.body.updated_comment.body).to.equal(commentDocs[2].body);
-                        expect(res.body.updated_comment.votes).to.eql(commentDocs[2].votes);
-                    });
-            });
-            it('DELETEs a comment when receiving a DELETE request to api/comments/:comment_id', () => {
-                return request
-                    .del(`/api/comments/${commentDocs[2]._id}`)
-                    .set('Accept', 'application/json')
-                    // supertest expect  - key on promise object
-                    .expect(200)
-                    .then(res => {
-                        expect(res.body.deleted_comment).to.be.an('object');
-                        expect(res.body.deleted_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                        expect(res.body.deleted_comment.votes).to.equal(20);
-                        expect(res.body.deleted_comment.body).to.equal(commentDocs[2].body);
-                        expect(res.body.deleted_comment.votes).to.eql(commentDocs[2].votes); 
-                    }).then(() => {
-                        // try to delete again to see if worked the first time
-                        return request
+        it('returns an appropriate error message if non-existent id inputted', () => {
+            return request
+                .get('/api/users/banana')
+                .then(res => {
+                    expect(res.status).to.equal(400);
+                    expect(res.body).to.eql({ error: 'please input a valid user id' });
+                    expect(res.body.error).to.equal('please input a valid user id');
+                });
+        });
+    });
+
+    describe('API requests to api/comments', () => {
+        it('GETs all comments in response to a request from api/comments', () => {
+            return request
+                .get('/api/comments')
+                .set('Accept', 'application/json')
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.comments).to.be.an('array');
+                    expect(res.body.comments.length).to.equal(9);
+                    expect(res.body.comments[3]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                });
+        });
+        it('GETs a comment by it\'s id from api/comments:comment_id', () => {
+            return request
+                .get(`/api/comments/${commentDocs[4]._id}`)
+                .set('Accept', 'application/json')
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.comment).to.be.an('object');
+                    expect(res.body.comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.comment.votes).to.equal(commentDocs[4].votes);
+                    expect(res.body.comment.body).to.equal(commentDocs[4].body);
+                });
+        });
+        it('responds with an appropriate error to a GET request with an invalid comment id', () => {
+            return request
+                .get('/api/comments/lucyliu21')
+                .set('Accept', 'application/json')
+                // supertest expect  - key on promise object
+                .expect(400)
+                .then(res => {
+                    expect(res.body).to.eql({ error: 'lucyliu21 is not a valid comment id' });
+                    expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
+                });
+        });
+        it('makes a PUT request to increase the votes to api/comments:comment_id', () => {
+            return request
+                .put(`/api/comments/${commentDocs[6]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({ vote: 'up' })
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.updated_comment).to.be.an('object');
+                    expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.updated_comment.votes).to.equal(17);
+                });
+        });
+        it('makes a PUT request to decrease the votes to api/comments:comment_id', () => {
+            return request
+                .put(`/api/comments/${commentDocs[6]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({ vote: 'down' })
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.updated_comment).to.be.an('object');
+                    expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.updated_comment.votes).to.equal(16);
+                });
+        });
+        it('responds with an appropriate error to a PUT request with an invalid comment id', () => {
+            return request
+                .put('/api/comments/lucyliu21')
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({ vote: 'down' })
+                // supertest expect  - key on promise object
+                .expect(400)
+                .then(res => {
+                    expect(res.body).to.eql({ error: 'lucyliu21 is not a valid comment id' });
+                    expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
+                });
+        });
+        it('responds with the unchanged comment to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
+            return request
+                .put(`/api/comments/${commentDocs[6]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({ vote: 'banana' })
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.updated_comment).to.be.an('object');
+                    expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.updated_comment.votes).to.equal(16);
+                    expect(res.body.updated_comment.body).to.equal(commentDocs[6].body);
+                    expect(res.body.updated_comment.votes).to.eql(commentDocs[6].votes);
+                });
+        });
+        it('responds with the unchanged comment to a PUT request if the query string parameter is not "vote"', () => {
+            return request
+                .put(`/api/comments/${commentDocs[2]._id}`)
+                .set('Accept', 'application/json')
+                // query string parameter
+                .query({ july: 'up' })
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.updated_comment).to.be.an('object');
+                    expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.updated_comment.votes).to.equal(20);
+                    expect(res.body.updated_comment.body).to.equal(commentDocs[2].body);
+                    expect(res.body.updated_comment.votes).to.eql(commentDocs[2].votes);
+                });
+        });
+        it('DELETEs a comment when receiving a DELETE request to api/comments/:comment_id', () => {
+            return request
+                .del(`/api/comments/${commentDocs[2]._id}`)
+                .set('Accept', 'application/json')
+                // supertest expect  - key on promise object
+                .expect(200)
+                .then(res => {
+                    expect(res.body.deleted_comment).to.be.an('object');
+                    expect(res.body.deleted_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.deleted_comment.votes).to.equal(20);
+                    expect(res.body.deleted_comment.body).to.equal(commentDocs[2].body);
+                    expect(res.body.deleted_comment.votes).to.eql(commentDocs[2].votes);
+                }).then(() => {
+                    // try to delete again to see if worked the first time
+                    return request
                         .delete(`/api/comments/${commentDocs[2]._id}`)
                         .set('Accept', 'application/json')
                         // supertest expect  - key on promise object
                         .expect(404)
                         .then(res => {
-                            expect(res.body).to.eql({error: `comment with id ${commentDocs[2]._id} does not exist`});
+                            expect(res.body).to.eql({ error: `comment with id ${commentDocs[2]._id} does not exist` });
                         });
-                    });
+                });
+        });
+        it('responds with an appropriate error to a DELETE request if an invalid comment id is passed to /api/comments/:comment_id', () => {
+            return request
+                .del('/api/comments/lucyliu21')
+                .set('Accept', 'application/json')
+                // query string parameter
+                // supertest expect  - key on promise object
+                .expect(400)
+                .then(res => {
+                    expect(res.body).to.eql({ error: 'lucyliu21 is not a valid comment id' });
+                    expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
+                });
         });
     });
 
