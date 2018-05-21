@@ -107,8 +107,10 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.articles).to.be.an('array');
                     expect(res.body.articles.length).to.equal(6);
-                    expect(res.body.articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
+                    expect(res.body.articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes');
                     expect(res.body.articles[3].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
+                    expect(res.body.articles[3].created_by).to.have.keys('_id', 'username');
+                    expect(res.body.articles[3].belongs_to).to.have.keys('_id', 'title');
                 });
         });
         it('GETs an article by id from api/articles:article_id', () => {
