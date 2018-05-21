@@ -2,7 +2,7 @@ const {Article} = require('../models');
 
 exports.findAllArticles = () => Article.find().select('-__v').populate('belongs_to', ['_id', 'title']).populate('created_by', ['_id', 'username']);
 
-exports.findArticleById = (id) => Article.findById(id);
+exports.findArticleById = (id) => Article.findById(id).select('-__v').populate('belongs_to', ['_id', 'title']).populate('created_by', ['_id', 'username']);
 
 exports.createArticle = (title, body, belongs_to, created_by) => Article.create({title, body, belongs_to, created_by});
 
