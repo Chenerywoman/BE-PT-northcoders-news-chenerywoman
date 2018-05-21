@@ -25,6 +25,7 @@ exports.seed = (topicsData, usersData, articlesData, commentsData) =>  {
             const articles = articlesData.map(article => {
                 article.created_by = usersDocs.find(user => user.username === article.created_by)._id;
                 article.belongs_to = topicsDocs.find(topic => topic.slug === article.topic)._id;
+                article.votes = Math.floor(Math.random() * 30);
                 return article;
             });
             return Promise.all([topicsDocs, usersDocs, Article.insertMany(articles)])
