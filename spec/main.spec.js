@@ -341,30 +341,36 @@ describe('API endpoints', () => {
                         expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
                     });
             });
-            it('responds with an appropriate error to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
+            it('responds with the unchanged comment to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
                 return request
-                    .put(`/api/comments/${commentDocs[2]._id}`)
+                    .put(`/api/comments/${commentDocs[6]._id}`)
                     .set('Accept', 'application/json')
                     // query string parameter
                     .query({vote: 'banana'})
                     // supertest expect  - key on promise object
-                    .expect(400)
+                    .expect(200)
                     .then(res => {
-                        expect(res.body).to.eql({ error: 'query string parameter "vote" must be "up" or "down"'});
-                        expect(res.body.error).to.equal('query string parameter "vote" must be "up" or "down"');
+                        expect(res.body.updated_comment).to.be.an('object');
+                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                        expect(res.body.updated_comment.votes).to.equal(16);
+                        expect(res.body.updated_comment.body).to.equal(commentDocs[6].body);
+                        expect(res.body.updated_comment.votes).to.eql(commentDocs[6].votes);
                     });
             });
-            it('responds with an appropriate error to a PUT request if the query string parameter is not "vote"', () => {
+            it('responds with the unchanged comment to a PUT request if the query string parameter is not "vote"', () => {
                 return request
                     .put(`/api/comments/${commentDocs[2]._id}`)
                     .set('Accept', 'application/json')
                     // query string parameter
                     .query({july: 'up'})
                     // supertest expect  - key on promise object
-                    .expect(400)
+                    .expect(200)
                     .then(res => {
-                        expect(res.body).to.eql({ error: 'query string parameter "vote" must be "up" or "down"'});
-                        expect(res.body.error).to.equal('query string parameter "vote" must be "up" or "down"');
+                        expect(res.body.updated_comment).to.be.an('object');
+                        expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                        expect(res.body.updated_comment.votes).to.equal(20);
+                        expect(res.body.updated_comment.body).to.equal(commentDocs[2].body);
+                        expect(res.body.updated_comment.votes).to.eql(commentDocs[2].votes);
                     });
             });
         });
