@@ -11,7 +11,6 @@ exports.changeCommentVotes = (req, res, next) => {
     })
     .catch((err) => { 
       if (err.name === 'CastError' && err.model.modelName === 'comments') return next({ status: 400,  message: `${req.params.comment_id} is not a valid comment id`});
-      else if (err.status === 400) return next(err);
       else return next({status: 500, message: 'server error'});
       });
 };
