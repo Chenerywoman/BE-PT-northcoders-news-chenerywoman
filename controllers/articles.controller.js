@@ -1,7 +1,6 @@
 const {findAllArticles, findArticleById, updateArticleVote} = require('../queries/articles.queries');
-const {findCommentsForArticle} = require('../queries/comments.queries');
+const {findCommentsForArticle, createComment, countCommentsForArticle} = require('../queries/comments.queries');
 const {findUserById} = require('../queries/users.queries');
-const {createComment} = require('../queries/comments.queries')
 
 exports.getAllArticles = (req, res, next) => {
   return findAllArticles()
@@ -10,7 +9,12 @@ exports.getAllArticles = (req, res, next) => {
   };
   
 exports.getArticlesById = (req, res, next) => {
-  return findArticleById(req.params.article_id)
+  return findArticleById(req.params.article_id).lean()
+  .then(article => Promise.all([article, countCommentsForArticle(article._id)]))
+  .then(([article, count]) =>  {
+        article.comments = count;
+        return article;
+    })
   .then(article =>  res.status(200).send({article}))
   .catch((err) => { 
     if (err.name === 'CastError') return next({status: 400, message: 'please input a valid article id'});
