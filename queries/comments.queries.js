@@ -1,5 +1,7 @@
 const {Comment} = require('../models');
 
+exports.findComments = () => Comment.find();
+
 exports.findCommentById = (_id) => Comment.findById(_id);
 
 exports.findCommentsForArticle = (belongs_to) => Comment.find({belongs_to});
