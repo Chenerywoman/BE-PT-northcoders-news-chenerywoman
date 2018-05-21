@@ -326,15 +326,17 @@ describe('API endpoints', () => {
                 .expect(200)
                 .then(res => {
                     expect(res.body.comment).to.be.an('object');
-                    expect(res.body.comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
+                    expect(res.body.comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
                     expect(res.body.comment.votes).to.equal(commentDocs[4].votes);
                     expect(res.body.comment.body).to.equal(commentDocs[4].body);
+                    expect(res.body.comment.created_by).to.have.keys('_id', 'username');
+                    expect(res.body.comment.belongs_to).to.have.keys('_id', 'title');
                 });
         });
         it('responds with an appropriate error to a GET request with an invalid comment id', () => {
             return request
                 .get('/api/comments/lucyliu21')
-                .set('Accept', 'application/json')q
+                .set('Accept', 'application/json')
                 // supertest expect  - key on promise object
                 .expect(400)
                 .then(res => {
