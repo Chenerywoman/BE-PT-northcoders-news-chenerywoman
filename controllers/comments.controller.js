@@ -1,4 +1,19 @@
-const {findCommentById, updateCommentVote, deleteComment} = require('../queries/comments.queries');
+const {findCommentById, updateCommentVote, deleteComment, findComments} = require('../queries/comments.queries');
+
+exports.getComments = (req, res, next) => {
+  return findComments()
+    .then(comments => res.status(200).send({comments}))
+    .catch(() =>  next({status: 500, message: 'server error - unable to delete'}));
+};
+
+exports.getCommentById = (req, res, next) => {
+  return findCommentById(req.params.comment_id)
+    .then(comment  => res.status(200).send({comment}))
+    .catch(err => {
+      if (err.name === 'CastError' && err.model.modelName === 'comments') return next({ status: 400,  message: `${req.params.comment_id} is not a valid comment id`});
+      else return next({status: 500, message: 'server error - unable to delete'});
+    });
+};
 
 exports.changeCommentVotes = (req, res, next) => {
     return findCommentById(req.params.comment_id)
@@ -25,15 +40,6 @@ exports.deleteComment = (req, res, next) => {
     .catch(err => {
       if (err.status === 404) return next(err);
       else if (err.name === 'CastError' && err.model.modelName === 'comments') return next({ status: 400,  message: `${req.params.comment_id} is not a valid comment id`});
-      else return next({status: 500, message: 'server error - unable to delete'});
-    });
-};
-
-exports.getCommentById = (req, res, next) => {
-  return findCommentById(req.params.comment_id)
-    .then(comment  => res.status(200).send({comment}))
-    .catch(err => {
-      if (err.name === 'CastError' && err.model.modelName === 'comments') return next({ status: 400,  message: `${req.params.comment_id} is not a valid comment id`});
       else return next({status: 500, message: 'server error - unable to delete'});
     });
 };
