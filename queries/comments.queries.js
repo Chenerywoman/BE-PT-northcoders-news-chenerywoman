@@ -14,3 +14,5 @@ exports.updateCommentVote  = (_id, vote) => {
     // {new:true} returns the updated version
     return Comment.findByIdAndUpdate(_id, {$inc: {votes: change}}, {new: true});
 };
+
+exports.deleteComment = (_id) => Comment.findByIdAndRemove(_id);
