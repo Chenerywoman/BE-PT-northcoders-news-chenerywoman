@@ -60,7 +60,7 @@ exports.getCommentsforArticle = (req, res, next) => {
     .then(article => res.status(200).send({updated_article: article}))
     .catch((err) => { 
       if (err.name === 'CastError' && err.model.modelName === 'articles') return next({ status: 400,  message: `${req.params.article_id} is not a valid article id`});
-      else if (err.status === 400) return next(err)
+      else if (err.status === 400) return next(err);
       else return next({status: 500, message: 'server error'});
       });
 };
