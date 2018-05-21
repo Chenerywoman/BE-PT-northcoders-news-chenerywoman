@@ -1,6 +1,6 @@
 const {Article} = require('../models');
 
-exports.findAllArticles = () => Article.find();
+exports.findAllArticles = () => Article.find().select('-__v').populate('belongs_to', ['_id', 'title']).populate('created_by', ['_id', 'username']);
 
 exports.findArticleById = (id) => Article.findById(id);
 
