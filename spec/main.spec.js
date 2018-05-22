@@ -12,7 +12,7 @@ const { seed } = require('../seed/seed');
 const { articles, comments, topics, users } = require('../seed/testData');
 
 describe('API endpoints', () => {
-    let topicDocs, userDocs, articleDocs, commentDocs
+    let topicDocs, userDocs, articleDocs, commentDocs;
     before(() => {
         return seed(topics, users, articles, comments)
             .then(data => {
@@ -107,10 +107,11 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.articles).to.be.an('array');
                     expect(res.body.articles.length).to.equal(6);
-                    expect(res.body.articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes');
+                    expect(res.body.articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', 'comments');
                     expect(res.body.articles[3].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
                     expect(res.body.articles[3].created_by).to.have.keys('_id', 'username');
                     expect(res.body.articles[3].belongs_to).to.have.keys('_id', 'title');
+                    expect(res.body.articles[3].comments).to.be.a('number');
                 });
         });
         it('GETs an article by id from api/articles:article_id', () => {
