@@ -19,4 +19,4 @@ exports.updateCommentVote  = (_id, vote) => {
 
 exports.deleteComment = (_id) => Comment.findByIdAndRemove(_id);
 
-exports.countCommentsForArticle = (belongs_to) => Comment.count({belongs_to});
+exports.countCommentsForArticle = (belongs_to) => Comment.count({belongs_to}).lean();
