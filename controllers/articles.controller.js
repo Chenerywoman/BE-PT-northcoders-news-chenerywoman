@@ -4,8 +4,16 @@ const {findUserById} = require('../queries/users.queries');
 
 exports.getAllArticles = (req, res, next) => {
   return findAllArticles()
-  .then(articles => res.status(200).send({articles}))
-  .catch(() => next({status: 500, message: 'server error: unable to find topics'}))
+  .then(articles => {
+   return Promise.all(articles.map(async article => {
+      article.comments = await countCommentsForArticle(article._id);
+      return article;
+    }))
+  })
+  .then(articles => {
+    return res.status(200).send({articles})
+  })
+  .catch((err) =>  next({status: 500, message: 'server error: unable to find articles'}))
   };
   
 exports.getArticlesById = (req, res, next) => {
