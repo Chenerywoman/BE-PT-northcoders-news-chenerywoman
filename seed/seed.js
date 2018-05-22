@@ -21,14 +21,16 @@ exports.seed = (topicsData, usersData, articlesData, commentsData) =>  {
     .then(([topicsDocs, usersDocs]) => {
         // map over articlesData 
         // 1. substitutes the value of created_by (which is the same as a username for a particular user), for the id of the user
+            // uses js find() method
         // 2. adds a belongs_to property & sets the value to the id of the topic where the topic slug is the same as article topic
+            // uses js find() method
             const articles = articlesData.map(article => {
                 article.created_by = usersDocs.find(user => user.username === article.created_by)._id;
                 article.belongs_to = topicsDocs.find(topic => topic.slug === article.topic)._id;
-                article.votes = Math.floor(Math.random() * 30);
+                article.votes = Math.floor(Math.random() * 30)
                 return article;
             });
-            return Promise.all([topicsDocs, usersDocs, Article.insertMany(articles)])
+            return Promise.all([topicsDocs, usersDocs, Article.insertMany(articles)]);
        })
        .then(([topicsDocs, usersDocs, articlesDocs]) => {
            // map over commentsData
