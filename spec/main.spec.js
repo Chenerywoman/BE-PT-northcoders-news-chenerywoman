@@ -13,7 +13,7 @@ const { articles, comments, topics, users } = require('../seed/testData');
 
 describe('API endpoints', () => {
     let topicDocs, userDocs, articleDocs, commentDocs;
-    before(() => {
+    beforeEach(() => {
         return seed(topics, users, articles, comments)
             .then(data => {
                 [topicDocs, userDocs, articleDocs, commentDocs] = data;
@@ -106,7 +106,7 @@ describe('API endpoints', () => {
                 .get('/api/articles')
                 .then(res => {
                     expect(res.body.articles).to.be.an('array');
-                    expect(res.body.articles.length).to.equal(6);
+                    expect(res.body.articles.length).to.equal(5);
                     expect(res.body.articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', 'comments');
                     expect(res.body.articles[3].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
                     expect(res.body.articles[3].created_by).to.have.keys('_id', 'username');
@@ -215,7 +215,7 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.updated_article).to.be.an('object');
                     expect(res.body.updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
-                    expect(res.body.updated_article.votes).to.equal(articleDocs[2].votes);
+                    expect(res.body.updated_article.votes).to.equal(articleDocs[2].votes - 1);
                 });
         });
         it('responds with an appropriate error to a PUT request if an invalid user id is passed as in the request body', () => {
@@ -319,7 +319,7 @@ describe('API endpoints', () => {
                 .expect(200)
                 .then(res => {
                     expect(res.body.comments).to.be.an('array');
-                    expect(res.body.comments.length).to.equal(9);
+                    expect(res.body.comments.length).to.equal(8);
                     expect(res.body.comments[3]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
                     expect(res.body.comments[3].created_by).to.have.keys('_id', 'username');
                     expect(res.body.comments[3].belongs_to).to.have.keys('_id', 'title');
@@ -376,7 +376,7 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.updated_comment).to.be.an('object');
                     expect(res.body.updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                    expect(res.body.updated_comment.votes).to.equal(16);
+                    expect(res.body.updated_comment.votes).to.equal(15);
                 });
         });
         it('responds with an appropriate error to a PUT request with an invalid comment id', () => {
