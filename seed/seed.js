@@ -20,27 +20,31 @@ exports.seed = (topicsData, usersData, articlesData, commentsData) =>  {
     .then(() => Promise.all([Topic.insertMany(topicsData), User.insertMany(usersData)]))
     .then(([topicsDocs, usersDocs]) => {
         // map over articlesData 
-        // 1. substitutes the value of created_by (which is the same as a username for a particular user), for the id of the user
-            // uses js find() method
-        // 2. adds a belongs_to property & sets the value to the id of the topic where the topic slug is the same as article topic
-            // uses js find() method
             const articles = articlesData.map(article => {
-                article.created_by = usersDocs.find(user => user.username === article.created_by)._id;
-                article.belongs_to = topicsDocs.find(topic => topic.slug === article.topic)._id;
-                article.votes = Math.floor(Math.random() * 30)
-                return article;
+                // sets up a new variable called created_by. The value is the id of a user whose username is the same as the created_by property of the article (in each iteration of map), using js find() method.  
+                const created_by = usersDocs.find(user => user.username === article.created_by)._id;
+                // creates a variable called belongs_to & sets the value to the id of the topic where the topic slug is the same as article topic, using js find() method
+                const belongs_to = topicsDocs.find(topic => topic.slug === article.topic)._id;
+                //creates a variable called votes & assigned it as a random number for each iteration of article
+                const votes = Math.floor(Math.random() * 30)
+                // creates a new object which contains all the key-value pairs of the original article (using spread operator) and the three new variables, created-by, belongs-to &amp; votes
+                return { ...article, created_by, belongs_to, votes}
             });
+
+            // returns the topicDocs, userDocs and the promise from inserting all the articles into the database
             return Promise.all([topicsDocs, usersDocs, Article.insertMany(articles)]);
        })
        .then(([topicsDocs, usersDocs, articlesDocs]) => {
            // map over commentsData
-            // 1. where belongs_to is the same as an article title, change belongs_to to the id of that article
-            // 2. where created_by is the same as the username of a usser, change created_by to the id of that user
             const comments = commentsData.map(comment => {
-                comment.belongs_to = articlesDocs.find(article => article.title === comment.belongs_to)._id;
-                comment.created_by = usersDocs.find(user => user.username === comment.created_by)._id;
-                return comment;
+                // creates a new variable belongs_to with the value as the id the article title where the article.title has the same&nbsp;value as the comment.belongs_to property
+                const belongs_to = articlesDocs.find(article => article.title === comment.belongs_to)._id;
+                // creates a new variable created_by, where the value is set to the id of the user where the user’s username property is has&nbsp;the same value as the comment’s created_by property
+                const created_by = usersDocs.find(user => user.username === comment.created_by)._id;
+                // returns a new object&nbsp;which has all the&nbsp;key-value pairs of that iteration’s comment variable, plus the new created_by &amp; belongs_to comments
+                return { ...comment, created_by, belongs_to};
             });
+            // returns the topicDocs, userDocs, articleDocs and the promise from inserting all the comments into the database
             return Promise.all([topicsDocs, usersDocs, articlesDocs, Comment.insertMany(comments)])
        });
     };
