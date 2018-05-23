@@ -2,7 +2,6 @@
 // or if the env is undefined (if not running from spec file) it is set to dev
 // heroku will set it to 'production'
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev' ;
-let url = require('./config/index');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
@@ -11,6 +10,8 @@ const apiRouter = require('./routers/api.router.js');
 
 // if deploying to Heroku, heroku treats as prodution so sets the url to the properyty MONGO_URL
 if (process.env.NODE_ENV === 'production') {url = process.env.MONGO_URL;}
+// this is if the env is not production & it is test or dev - had to change from requiring in at the top, as heroku was trying to read the config file which is not on heroku, so it crashes the app
+else url = require('./config/index');
 // this sets up the connection to the mongoose database - to a particular collection - see config/index.js for url
 // removed useMongoClient inside connect line 14 & removing mongoose.Promise line 15 as not required with updated mongoose
 mongoose.connect(url);
