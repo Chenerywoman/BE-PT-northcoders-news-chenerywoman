@@ -1,0 +1,33 @@
+
+h1 {
+    text-align: center;
+    color: darkblue
+}
+
+h2 {
+    color: firebrick
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace
+}
+
+ul {
+    list-style-type: none;
+}
+
+.api {
+    font-size: 1.25em;
+}
+
+.endpoint {
+    background-color: lightcyan;
+}
+
+.http {
+    color: crimson
+}
+ 
+.route {
+    color: darkblue
+}
