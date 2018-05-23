@@ -8,5 +8,5 @@ if (process.env.NODE_ENV === 'production') {PORT = process.env.PORT;}
 // app will now listen either on port 3000 or the heroku port
 app.listen(PORT, function (err) {if (err) 
   return console.log(err);
-  console.log('App listening on port 3000');
+  console.log(`App listening on port ${PORT}`);
 });
