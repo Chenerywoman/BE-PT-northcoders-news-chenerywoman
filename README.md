@@ -29,7 +29,7 @@ A step by step series of examples that tell you have to get a development env ru
 #### 1. Download the project from Github
 1. On the command line, from the folder where you wish to store the repository, enter:
 
-```git clone https://github.com/Chenerywoman/BE-PT-northcoders-news.git```
+```bash git clone https://github.com/Chenerywoman/BE-PT-northcoders-news.git```
 
 2. Fork the project from Github by clicking on the Fork button on the top right-hand side of the screen.
 
@@ -37,7 +37,7 @@ A step by step series of examples that tell you have to get a development env ru
 
 1. To check if you already have node installed, run this command in your terminal:
 
-```node -v```
+```bash node -v```
 
 2. If node is not installed, follow the instructions at [https://nodejs.org/en/]
 
@@ -47,7 +47,7 @@ A step by step series of examples that tell you have to get a development env ru
 
 2. To confirm you have npm installed, run the following command in your terminal:
 
-```npm -v```
+```bash npm -v```
 
 #### 4. Install MongoDB
 
@@ -57,74 +57,65 @@ A step by step series of examples that tell you have to get a development env ru
 
 1. To install all the necessary npm packages (including Mongoose) to run the project, run this command in your terminal from the root of your project:
 
-``` npm install```
+```bash npm install```
 
 #### 6. Set up a config folder
 
 1. Set up a config folder in the root of the project
 
-```mkdir config```
+```bash mkdir config```
 
 2. Make 3 files in the config folder: dev.js, test.js & index.js. Index.js refers to either the dev or test file, depending on whether process.env.NODE_ENV is set to either 'test' or 'dev'.
 
-```touch dev.js``` etc
+```bash touch dev.js``` etc
 
 3. Add the following code to each of the files:
 
 **index.js**
-```module.exports = require(`./${process.env.NODE_ENV}.js`);```
+```js module.exports = require(`./${process.env.NODE_ENV}.js`);```
 
 **test.js**
-```module.exports = 'mongodb://localhost:27017/northcoders_news_test';```
+```js module.exports = 'mongodb://localhost:27017/northcoders_news_test';```
 
 **dev.js**
-```module.exports = 'mongodb://localhost:27017/northcoders_news_test';```
+```js module.exports = 'mongodb://localhost:27017/northcoders_news_test';```
 
 #### 7. Use NPM scripts to run the project
 
 The following scripts (from the package.json scripts section) can be used in the command line to run the project:
 
-  * To seed the dev version of the database: ```npm run seedDev```
-  * To run the server: ```npm run dev```
+  * To seed the dev version of the database: ```bash npm run seedDev```
+  * To run the server: ```bash npm run dev```
 
-Once the database has been seed and the server is up and running, it should respond to each of the endpoints listed at /api (contained in .public/index.html)
+Once the database has been seed and the server is up and running, it should respond to each of the endpoints listed at /api.
 
 ## Running the tests
 
 The test file for the project is ./spec/main.spec.js
 
-To seed the test database & run the tests ```npm test```
+To seed the test database & run the tests ```bash npm test```
 
 # Break down into end to end tests
 
-Explain what these tests test and why
+The tests use mocha, chai & supertest.  
 
-Give an example
+The main.spec.js has one main 'API endpoints' describe block which contains 4 further describe blocks for ach of users, topics, articles, comments.
+It exhaustively tests all the endpoints for their respective GET, PUT, POST & DELETE requests.  It also tests error-handling for each route.
 
 ## Deployment
 Add additional notes about how to deploy this on a live system
 
 ## Built With
-Node
-Express
-Mongoose
-Supertest
-bodyparser
-
-## Contributing
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
-
-Versioning
-We use SemVer for versioning. For the versions available, see the tags on this repository.
+Node: version 9.9.0
+MongoDB: version version 3.4.10
+NPM: 5.6.0
 
 ## Authors
-Billie Thompson - Initial work - PurpleBooth
-See also the list of contributors who participated in this project.
+Rachel Chenery 
+@Chenerywoman
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Acknowledgments
-Hat tip to anyone who's code was used
-Inspiration
-etc
+Massive thanks to my lovely tutors @northcoders, Jac Darby @JacDarby and Anat Dean @AnatDean.
