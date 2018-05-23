@@ -12,10 +12,14 @@ const { seed } = require('../seed/seed');
 const { articles, comments, topics, users } = require('../seed/testData');
 
 describe('API endpoints', () => {
+    // sets variables which will have the seeded data assigned to them in line 20
     let topicDocs, userDocs, articleDocs, commentDocs;
+    // before each it block
     beforeEach(() => {
+        // call the seed function with the test data required in from seed/testData - line 12 - requiring in also parses the JSON into js
         return seed(topics, users, articles, comments)
             .then(data => {
+                // array destructuring assigns the values in the data array to each of the variables set in line 16
                 [topicDocs, userDocs, articleDocs, commentDocs] = data;
             })
     });
