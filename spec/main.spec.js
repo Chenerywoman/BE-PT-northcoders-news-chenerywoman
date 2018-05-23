@@ -43,7 +43,7 @@ describe('API endpoints', () => {
                 .then(res => {
                     expect(res.body.articles).to.be.an('array');
                     expect(res.body.articles.length).to.equal(2);
-                    expect(res.body.articles[0]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
+                    expect(res.body.articles[0]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes');
                     expect(res.body.articles[0].title).to.equal('Living in the shadow of a great man');
                 });
         });
