@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha ./spec/*.spec.js",
-    "start": "node app.js",
+    "start": "node listen.js",
     "dev": "nodemon listen.js",
     "lint": "eslint ./",
     "seedDev": "node seed/devSeed.js"
