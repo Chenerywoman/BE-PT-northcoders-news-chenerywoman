@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const {articlesData, commentsData, topicsData, usersData } = require('./devData');
 const {seed} = require('./seed');
 // need this as not connecting via the app so need to set the node env to dev so the config file works
-process.env.NODE_ENV = 'dev';  
 const url = require('../config/index');
 
 // connect to the database using the url brought in from config above

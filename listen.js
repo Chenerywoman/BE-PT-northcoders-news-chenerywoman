@@ -1,6 +1,6 @@
 const app = require('./app');
 // sets a variable PORT with a value of 300 - for use from the local host
-let PORT = 3000 
+let PORT = 3000;
 
 // when deploying to heroku, the node env will be production.  In that case, change the value of PORT to process.env.PORT, which heroku will recognise.
 if (process.env.NODE_ENV === 'production') {PORT = process.env.PORT;}

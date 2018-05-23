@@ -131,7 +131,17 @@ The main.spec.js has one main 'API endpoints' describe block which contains 4 fu
 It exhaustively tests all the endpoints for their respective GET, PUT, POST & DELETE requests.  It also tests error-handling for each route.
 
 ## Deployment
-Add additional notes about how to deploy this on a live system
+
+How to deploy this on a live system:
+
+### mlab
+1. Go to [https://mlab.com/] and create an account. Mlab stores the MongoDB. 
+
+### Heroku
+1. Go to [https://signup.heroku.com/dc] to create an account. Heroku will host the app.
+2. Follow the instructions at https://devcenter.heroku.com/articles/getting-started-with-nodejs
+
+
 
 ## Built With
 Node: version 9.9.0

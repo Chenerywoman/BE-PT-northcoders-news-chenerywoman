@@ -8,7 +8,8 @@
     "start": "node listen.js",
     "dev": "nodemon listen.js",
     "lint": "eslint ./",
-    "seedDev": "node seed/devSeed.js"
+    "seedDev": "NODE_ENV=dev node seed/devSeed.js",
+    "seedProd": "NODE_ENV=production node seed/devSeed.js"
   },
   "author": "",
   "license": "ISC",
