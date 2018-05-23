@@ -4,6 +4,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev' ;
 const mongoose = require('mongoose');
 const express = require('express');
+let url  = '';
 const app = express();
 const { json } = require('body-parser');
 const apiRouter = require('./routers/api.router.js');
