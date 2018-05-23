@@ -7,7 +7,7 @@ const usersRouter = require('./users.router.js');
 const path = require('path');
 
 router.get('/', (req, res, next) => {
-    return res.sendFile(path.join(__dirname, '..' ,'public/index.html'));
+    return res.sendFile(path.join(__dirname, '..','public/index.html'));
 });
 // GET /api - serves an HTML page with documentation for all the available endpoints
 
