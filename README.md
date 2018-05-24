@@ -1,5 +1,7 @@
 # NorthCoders News BackEnd
 
+[https://chenerywoman-northcoders-news.herokuapp.com/]
+
 This JavaScript project uses the Express npm package in the Node environment to set up a server which connects to a MongoDB database using the Mongoose library.  The database connected to is either northcoders_news or northcoders_news_test, depending on whether the project is running in the test or dev environment.  
 
 The seed file (./seed/seed.js) contains a seed function with four parameters which takes four separate arrays of JSON objects containing data about users, topics, articles & comments.  The seed file can be run either via the test file (./spec/main.spec.js) or via the dev file (./seed/devSeed.js). If called from the test file, the arguments passed to the seed function are arrays of JSON objects contained in files in the testData folder.  If run from the dev file, the data passed as arguments are contained in the devData folder.  The seed file uses four models for each of users, topics, articles & comments conforming to four MongoDB schemas, contained in the project's models folder.  The seed file first drops the existing database it is connected to (either the northcoders_news or northcoders_news_test database, depending on whether the seed file is being called in the test or dev environment).  It then manipulates data required in from either the testData or devData files and then saves the data to the appropriate collection in either the northcoders_news or northcoders_news_test database.
@@ -75,7 +77,7 @@ npm install
 mkdir config
 ```
 
-2. Make 3 files in the config folder: dev.js, test.js & index.js. Index.js refers to either the dev or test file, depending on whether process.env.NODE_ENV is set to either 'test' or 'dev'.
+2. Make 4 files in the config folder: dev.js, test.js, productions.js & index.js. Index.js refers to one of the other 3 files, depending on whether process.env.NODE_ENV is set to 'test', 'dev' or 'production'.
 
 ```bash 
 touch dev.js
@@ -95,7 +97,15 @@ module.exports = 'mongodb://localhost:27017/northcoders_news_test';
 
 **dev.js**
 ```js
-module.exports = 'mongodb://localhost:27017/northcoders_news_test';
+module.exports = 'mongodb://localhost:27017/northcoders_news';
+```
+
+**production.js**
+
+The code below has placeholders.  It is the format which you will see when you set up an mlab uri for your database, with placeholder username/passwords. Replace them with your actual user username/password from mlab - see below.
+
+```js
+module.exports  = 'mongodb://<username>:<password>.mlab.com:<no.sfrommlab>/<databasename>';
 ```
 
 #### 7. Use NPM scripts to run the project
@@ -127,21 +137,31 @@ npm test
 
 The tests use mocha, chai & supertest.  
 
-The main.spec.js has one main 'API endpoints' describe block which contains 4 further describe blocks for ach of users, topics, articles, comments.
-It exhaustively tests all the endpoints for their respective GET, PUT, POST & DELETE requests.  It also tests error-handling for each route.
+The main.spec.js has one main 'API endpoints' describe block which contains 4 further describe blocks for ach of users, topics, articles, comments.  It exhaustively tests all the endpoints for their respective GET, PUT, POST & DELETE requests.  It also tests error-handling for each route.
 
 ## Deployment
 
-How to deploy this on a live system:
+Deploy this on a live system:
 
 ### mlab
-1. Go to [https://mlab.com/] and create an account. Mlab stores the MongoDB. 
+
+Mlab stores the MongoDB. 
+
+1. Go to [https://mlab.com/] and create a free sandbox account. 
+2. Create a new user account & name for your database.
+3. Use your username & password in the uri for the database in the production.js file in the config folder.
+4. Run your seed file to seed the mlab databse with the following script, which sets the node environment to production, so it runs the seed file connected to the uri of the mlab database:
+
+```bash
+npm run seedProd
+```
 
 ### Heroku
+
+Heroku will host the app.
+
 1. Go to [https://signup.heroku.com/dc] to create an account. Heroku will host the app.
-2. Follow the instructions at https://devcenter.heroku.com/articles/getting-started-with-nodejs
-
-
+2. Follow the instructions at https://devcenter.heroku.com/articles/getting-started-with-nodejs, including setting up a config variable which links to the mlab data base. (You can copy the uri from your production.js file.)
 
 ## Built With
 Node: version 9.9.0
