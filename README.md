@@ -1,6 +1,6 @@
 # NorthCoders News BackEnd
 
-[https://chenerywoman-northcoders-news.herokuapp.com/]
+https://chenerywoman-northcoders-news.herokuapp.com/
 
 This JavaScript project uses the Express npm package in the Node environment to set up a server which connects to a MongoDB database using the Mongoose library.  The database connected to is either northcoders_news or northcoders_news_test, depending on whether the project is running in the test or dev environment.  
 
@@ -45,7 +45,7 @@ git clone https://github.com/Chenerywoman/BE-PT-northcoders-news.git
 node -v
 ```
 
-2. If node is not installed, follow the instructions at [https://nodejs.org/en/]
+2. If node is not installed, follow the instructions at https://nodejs.org/en/
 
 #### 3. Use NPM
 
@@ -147,7 +147,7 @@ Deploy this on a live system:
 
 Mlab stores the MongoDB. 
 
-1. Go to [https://mlab.com/] and create a free sandbox account. 
+1. Go to https://mlab.com/ and create a free sandbox account. 
 2. Create a new user account & name for your database.
 3. Use your username & password in the uri for the database in the production.js file in the config folder.
 4. Run your seed file to seed the mlab databse with the following script, which sets the node environment to production, so it runs the seed file connected to the uri of the mlab database:
@@ -160,7 +160,7 @@ npm run seedProd
 
 Heroku will host the app.
 
-1. Go to [https://signup.heroku.com/dc] to create an account. Heroku will host the app.
+1. Go to https://signup.heroku.com/dc to create an account. 
 2. Follow the instructions at https://devcenter.heroku.com/articles/getting-started-with-nodejs, including setting up a config variable which links to the mlab data base. (You can copy the uri from your production.js file.)
 
 ## Built With
