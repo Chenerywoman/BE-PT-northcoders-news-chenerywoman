@@ -1,18 +1,10 @@
-// 1. seed topics - done
-// 2. seed users - done
-// 3. seed articles -done 
-    // each article belongs to a topic - ref. id topic id
-    // created by a user
-// 4.  seed random number of comments for each article 
-        // created by a random user - ref. user id 
-        // belong to specific article - ref. article id
-
 const mongoose = require('mongoose');
 const {Topic, User, Article, Comment} = require('../models');
 
 // n.b. when the seed function is called, will already be connected to the database:
     // devSeed will connect to dev database & call the seed function with dev data
     // spec file will connect to the test database & call the seed function with test data
+    // run seedProd will connect to the mlab database & calls the seed function with the dev data
 
 exports.seed = (topicsData, usersData, articlesData, commentsData) =>  {
     return mongoose.connection.dropDatabase()
