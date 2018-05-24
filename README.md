@@ -1,6 +1,6 @@
 # NorthCoders News BackEnd
 
-https://chenerywoman-northcoders-news.herokuapp.com/
+https://chenerywoman-northcoders-news.herokuapp.com/api
 
 This JavaScript project uses the Express npm package in the Node environment to set up a server which connects to a MongoDB database using the Mongoose library.  The database connected to is either northcoders_news or northcoders_news_test, depending on whether the project is running in the test or dev environment.  
 
