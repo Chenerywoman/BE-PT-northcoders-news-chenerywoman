@@ -9,7 +9,7 @@ const app = express();
 const { json } = require('body-parser');
 const apiRouter = require('./routers/api.router.js');
 
-// if deploying to Heroku, heroku treats as prodution so sets the url to the properyty MONGO_URL
+// if deploying to Heroku, heroku treats as prodution so sets the url to the properyty MONGO_URL, which has been set to the madl url on heroku
 if (process.env.NODE_ENV === 'production') {url = process.env.MONGO_URL;}
 // this is if the env is not production & it is test or dev - had to change from requiring in at the top, as heroku was trying to read the config file which is not on heroku, so it crashes the app
 else url = require('./config/index');
