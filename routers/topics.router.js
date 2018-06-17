@@ -5,8 +5,8 @@ const { getAllTopics, getArticlesByTopicId, postNewArticleToTopic } = require('.
 
 router.get('/', getAllTopics);
 
-router.get('/:topic_id/articles', getArticlesByTopicId);
-
-router.post('/:topic_id/articles', postNewArticleToTopic);
+router.route('/:topic_id/articles')
+.get(getArticlesByTopicId)
+.post(postNewArticleToTopic);
 
 module.exports = router;

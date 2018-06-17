@@ -5,10 +5,9 @@ const { changeCommentVotes, deleteComment, getCommentById, getComments} = requir
 
 router.get('/', getComments);
 
-router.get('/:comment_id', getCommentById);
-
-router.put('/:comment_id', changeCommentVotes);
-
-router.delete('/:comment_id', deleteComment);
+router.route('/:comment_id')
+.get(getCommentById)
+.put(changeCommentVotes)
+.delete(deleteComment);
 
 module.exports = router;
