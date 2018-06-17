@@ -12,7 +12,7 @@ exports.getArticlesByTopicId = (req, res, next) => {
     return findTopicById(req.params.topic_id)
     .then(topic => findArticlesByTopicId(topic._id))
     .then(articles => {
-      if (articles.length === 0) throw {status: 404, message: `there are no articles for the topic with id ${req.params.topic_id}`};
+      if (!articles.length) throw {status: 404, message: `there are no articles for the topic with id ${req.params.topic_id}`};
       else return res.status(200).send({articles});
     })
     .catch((err) => { 
