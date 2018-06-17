@@ -21,7 +21,7 @@ describe('API endpoints', () => {
             .then(data => {
                 // array destructuring assigns the values in the data array to each of the variables set in line 16
                 [topicDocs, userDocs, articleDocs, commentDocs] = data;
-            })
+            });
     });
     // disconnects from the db when the entire test file has run
     after(() => { mongoose.disconnect(); })
