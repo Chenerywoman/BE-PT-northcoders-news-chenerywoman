@@ -22,7 +22,7 @@ describe('API endpoints', () => {
                 .get('/api/topics')
                 .expect(200)
                 .then(res => {
-                    const {topics} = res.body;
+                    const { topics } = res.body;
                     expect(topics).to.be.an('array');
                     expect(topics.length).to.equal(3);
                     expect(topics[0]).to.have.keys('_id', 'title', 'slug', '__v');
@@ -34,7 +34,7 @@ describe('API endpoints', () => {
                 .get(`/api/topics/${topicDocs[0]._id}/articles`)
                 .expect(200)
                 .then(res => {
-                    const {articles} = res.body;
+                    const { articles } = res.body;
                     expect(articles).to.be.an('array');
                     expect(articles.length).to.equal(2);
                     expect(articles[0]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes');
@@ -45,19 +45,13 @@ describe('API endpoints', () => {
             return request
                 .get('/api/topics/3339999222/articles')
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'please input a valid topic id' });
-                    expect(res.body.error).to.equal('please input a valid topic id');
-                });
+                .then(res => expect(res.body.error).to.equal('please input a valid topic id'));
         });
         it('returns an appropriate error message if there are no articles for a topic', () => {
             return request
                 .get(`/api/topics/${topicDocs[2]._id}/articles`)
                 .expect(404)
-                .then(res => {
-                    expect(res.body).to.eql({ error: `there are no articles for the topic with id ${topicDocs[2]._id}` });
-                    expect(res.body.error).to.equal(`there are no articles for the topic with id ${topicDocs[2]._id}`);
-                });
+                .then(res => expect(res.body.error).to.equal(`there are no articles for the topic with id ${topicDocs[2]._id}`));
         });
         it('POSTs a new article to api/topics:topic_id/articles', () => {
             return request
@@ -66,7 +60,7 @@ describe('API endpoints', () => {
                 .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: userDocs[1]._id })
                 .expect(201)
                 .then(res => {
-                    const {new_article} = res.body;
+                    const { new_article } = res.body;
                     expect(new_article).to.be.an('object');
                     expect(new_article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
                     expect(new_article.title).to.equal('Why I love Penguins');
@@ -79,10 +73,7 @@ describe('API endpoints', () => {
                 .set('Accept', 'application/json')
                 .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: userDocs[1]._id })
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'banana is not a valid topic id' });
-                    expect(res.body.error).to.equal('banana is not a valid topic id');
-                });
+                .then(res => expect(res.body.error).to.equal('banana is not a valid topic id'));
         });
         it('responds with an appropriate error to a POST request if an invalid user id is passed as in the request body', () => {
             return request
@@ -90,10 +81,7 @@ describe('API endpoints', () => {
                 .set('Accept', 'application/json')
                 .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: 'matilda' })
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'matilda is not a valid user id' });
-                    expect(res.body.error).to.equal('matilda is not a valid user id');
-                });
+                .then(res => expect(res.body.error).to.equal('matilda is not a valid user id'));
         });
     });
 
@@ -103,7 +91,7 @@ describe('API endpoints', () => {
                 .get('/api/articles')
                 .expect(200)
                 .then(res => {
-                    const {articles} = res.body;
+                    const { articles } = res.body;
                     expect(articles).to.be.an('array');
                     expect(articles.length).to.equal(5);
                     expect(articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', 'comments');
@@ -118,7 +106,7 @@ describe('API endpoints', () => {
                 .get(`/api/articles/${articleDocs[1]._id}`)
                 .expect(200)
                 .then(res => {
-                    const {article} = res.body;
+                    const { article } = res.body;
                     expect(article).to.be.an('object');
                     expect(article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', 'comments');
                     expect(article.title).to.equal('7 inspirational thought leaders from Manchester UK');
@@ -130,17 +118,14 @@ describe('API endpoints', () => {
             return request
                 .get('/api/articles/3339999222')
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'please input a valid article id' });
-                    expect(res.body.error).to.equal('please input a valid article id');
-                });
+                .then(res => expect(res.body.error).to.equal('please input a valid article id'));
         });
         it('GETs all comments for an article from api/articles/:article_id/comments', () => {
             return request
                 .get(`/api/articles/${articleDocs[2]._id}/comments`)
                 .expect(200)
                 .then(res => {
-                    const {comments} = res.body;
+                    const { comments } = res.body;
                     expect(comments).to.be.an('array');
                     expect(comments.length).to.equal(2);
                     expect(comments[0]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
@@ -153,10 +138,7 @@ describe('API endpoints', () => {
             return request
                 .get(`/api/articles/${articleDocs[4]._id}/comments`)
                 .expect(404)
-                .then(res => {
-                    expect(res.body).to.eql({ error: `there are no comments for the article with id ${articleDocs[4]._id}` });
-                    expect(res.body.error).to.equal(`there are no comments for the article with id ${articleDocs[4]._id}`);
-                });
+                .then(res => expect(res.body.error).to.equal(`there are no comments for the article with id ${articleDocs[4]._id}`));
         });
         it('POSTs a new comment to api/articles:article_id/comments', () => {
             return request
@@ -165,7 +147,7 @@ describe('API endpoints', () => {
                 .send({ body: 'personally I\'d rather have a nice cup of tea', created_by: userDocs[1]._id })
                 .expect(201)
                 .then(res => {
-                    const {new_comment} = res.body;
+                    const { new_comment } = res.body;
                     expect(new_comment).to.be.an('object');
                     expect(new_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
                     expect(new_comment.body).to.equal('personally I\'d rather have a nice cup of tea');
@@ -177,11 +159,7 @@ describe('API endpoints', () => {
                 .set('Accept', 'application/json')
                 .send({ body: 'blah, blah, I am very impressed, blah.....', created_by: userDocs[1]._id })
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'bubbly21 is not a valid article id' });
-                    expect(res.body.error).to.equal('bubbly21 is not a valid article id');
-
-                });
+                .then(res => expect(res.body.error).to.equal('bubbly21 is not a valid article id'));
         });
         it('responds with an appropriate error to a POST request if an invalid user id is passed as in the request body', () => {
             return request
@@ -189,10 +167,7 @@ describe('API endpoints', () => {
                 .set('Accept', 'application/json')
                 .send({ body: 'must get my wand mended', created_by: 'Harry Potter' })
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'Harry Potter is not a valid user id' });
-                    expect(res.body.error).to.equal('Harry Potter is not a valid user id');
-                });
+                .then(res => expect(res.body.error).to.equal('Harry Potter is not a valid user id'));
         });
         it('makes a PUT request to increase the votes to api/articles:article_id', () => {
             return request
@@ -201,7 +176,7 @@ describe('API endpoints', () => {
                 .query({ vote: 'up' })
                 .expect(200)
                 .then(res => {
-                    const {updated_article} = res.body;
+                    const { updated_article } = res.body;
                     expect(updated_article).to.be.an('object');
                     expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[2].votes + 1);
@@ -211,11 +186,10 @@ describe('API endpoints', () => {
             return request
                 .put(`/api/articles/${articleDocs[2]._id}`)
                 .set('Accept', 'application/json')
-                // query string parameter
                 .query({ vote: 'down' })
                 .expect(200)
                 .then(res => {
-                    const {updated_article} = res.body;
+                    const { updated_article } = res.body;
                     expect(updated_article).to.be.an('object');
                     expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[2].votes - 1);
@@ -225,23 +199,18 @@ describe('API endpoints', () => {
             return request
                 .put('/api/articles/voldemort')
                 .set('Accept', 'application/json')
-                // query string parameter
                 .query({ vote: 'down' })
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'voldemort is not a valid article id' });
-                    expect(res.body.error).to.equal('voldemort is not a valid article id');
-                });
+                .then(res => expect(res.body.error).to.equal('voldemort is not a valid article id'));
         });
         it('responds with an unchanged article to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
             return request
                 .put(`/api/articles/${articleDocs[2]._id}`)
                 .set('Accept', 'application/json')
-                // query string parameter
                 .query({ vote: 'banana' })
                 .expect(200)
                 .then(res => {
-                    const {updated_article} = res.body;
+                    const { updated_article } = res.body;
                     expect(updated_article).to.be.an('object');
                     expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[2].votes);
@@ -251,11 +220,10 @@ describe('API endpoints', () => {
             return request
                 .put(`/api/articles/${articleDocs[4]._id}`)
                 .set('Accept', 'application/json')
-                // query string parameter
                 .query({ july: 'up' })
                 .expect(200)
                 .then(res => {
-                    const {updated_article} = res.body;
+                    const { updated_article } = res.body;
                     expect(updated_article).to.be.an('object');
                     expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[4].votes);
@@ -269,7 +237,7 @@ describe('API endpoints', () => {
                 .get('/api/users')
                 .expect(200)
                 .then(res => {
-                    const {users} = res.body;
+                    const { users } = res.body;
                     expect(users).to.be.an('array');
                     expect(users.length).to.equal(2);
                     expect(users[0]).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
@@ -281,7 +249,7 @@ describe('API endpoints', () => {
                 .get(`/api/users/username/${userDocs[1].username}`)
                 .expect(200)
                 .then(res => {
-                    const {user} = res.body;
+                    const { user } = res.body;
                     expect(user).to.be.an('object');
                     expect(user).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
                     expect(user.username).to.equal('dedekind561');
@@ -291,17 +259,14 @@ describe('API endpoints', () => {
             return request
                 .get('/api/users/username/3339999222')
                 .expect(404)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'username does not exist' });
-                    expect(res.body.error).to.equal('username does not exist');
-                });
+                .then(res => expect(res.body.error).to.equal('username does not exist'));
         });
         it('GETs a user by id from api/users:id', () => {
             return request
                 .get(`/api/users/${userDocs[1].id}`)
                 .expect(200)
                 .then(res => {
-                    const {user} = res.body;
+                    const { user } = res.body;
                     expect(user).to.be.an('object');
                     expect(user).to.have.keys('_id', '__v', 'avatar_url', 'name', 'username');
                     expect(user.username).to.equal('dedekind561');
@@ -311,10 +276,7 @@ describe('API endpoints', () => {
             return request
                 .get('/api/users/banana')
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'please input a valid user id' });
-                    expect(res.body.error).to.equal('please input a valid user id');
-                });
+                .then(res => expect(res.body.error).to.equal('please input a valid user id'));
         });
     });
 
@@ -325,7 +287,7 @@ describe('API endpoints', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then(res => {
-                    const {comments} = res.body;
+                    const { comments } = res.body;
                     expect(comments).to.be.an('array');
                     expect(comments.length).to.equal(8);
                     expect(comments[3]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
@@ -339,7 +301,7 @@ describe('API endpoints', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then(res => {
-                    const {comment} = res.body;
+                    const { comment } = res.body;
                     expect(comment).to.be.an('object');
                     expect(comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
                     expect(comment.votes).to.equal(commentDocs[4].votes);
@@ -353,10 +315,7 @@ describe('API endpoints', () => {
                 .get('/api/comments/lucyliu21')
                 .set('Accept', 'application/json')
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'lucyliu21 is not a valid comment id' });
-                    expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
-                });
+                .then(res => expect(res.body.error).to.equal('lucyliu21 is not a valid comment id'));
         });
         it('makes a PUT request to increase the votes to api/comments:comment_id', () => {
             return request
@@ -365,7 +324,7 @@ describe('API endpoints', () => {
                 .query({ vote: 'up' })
                 .expect(200)
                 .then(res => {
-                    const {updated_comment} = res.body; 
+                    const { updated_comment } = res.body;
                     expect(updated_comment).to.be.an('object');
                     expect(updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
                     expect(updated_comment.votes).to.equal(17);
@@ -378,7 +337,7 @@ describe('API endpoints', () => {
                 .query({ vote: 'down' })
                 .expect(200)
                 .then(res => {
-                    const {updated_comment} = res.body;
+                    const { updated_comment } = res.body;
                     expect(updated_comment).to.be.an('object');
                     expect(updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
                     expect(updated_comment.votes).to.equal(15);
@@ -390,10 +349,7 @@ describe('API endpoints', () => {
                 .set('Accept', 'application/json')
                 .query({ vote: 'down' })
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'lucyliu21 is not a valid comment id' });
-                    expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
-                });
+                .then(res => expect(res.body.error).to.equal('lucyliu21 is not a valid comment id'));
         });
         it('responds with the unchanged comment to a PUT request if the "vote" query string parameter is not "up" or "down"', () => {
             return request
@@ -402,7 +358,7 @@ describe('API endpoints', () => {
                 .query({ vote: 'banana' })
                 .expect(200)
                 .then(res => {
-                    const {updated_comment} = res.body;
+                    const { updated_comment } = res.body;
                     expect(updated_comment).to.be.an('object');
                     expect(updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
                     expect(updated_comment.votes).to.equal(16);
@@ -418,7 +374,7 @@ describe('API endpoints', () => {
                 .query({ july: 'up' })
                 .expect(200)
                 .then(res => {
-                    const {updated_comment} = res.body;
+                    const { updated_comment } = res.body;
                     expect(updated_comment).to.be.an('object');
                     expect(updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
                     expect(updated_comment.votes).to.equal(20);
@@ -428,36 +384,32 @@ describe('API endpoints', () => {
         });
         it('DELETEs a comment when receiving a DELETE request to api/comments/:comment_id', () => {
             return request
-                .del(`/api/comments/${commentDocs[2]._id}`)
+                .delete(`/api/comments/${commentDocs[2]._id}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then(res => {
-                    const {deleted_comment} = res.body;
+                    const { deleted_comment } = res.body;
                     expect(deleted_comment).to.be.an('object');
                     expect(deleted_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
                     expect(deleted_comment.votes).to.equal(20);
                     expect(deleted_comment.body).to.equal(commentDocs[2].body);
                     expect(deleted_comment.votes).to.eql(commentDocs[2].votes);
                 }).then(() => {
-                    // try to delete again to see if worked the first time
                     return request
                         .delete(`/api/comments/${commentDocs[2]._id}`)
                         .set('Accept', 'application/json')
                         .expect(404)
                         .then(res => {
-                            expect(res.body).to.eql({ error: `comment with id ${commentDocs[2]._id} does not exist` });
+                            expect(res.body.error).to.equal(`comment with id ${commentDocs[2]._id} does not exist`);
                         });
                 });
         });
         it('responds with an appropriate error to a DELETE request if an invalid comment id is passed to /api/comments/:comment_id', () => {
             return request
-                .del('/api/comments/lucyliu21')
+                .delete('/api/comments/lucyliu21')
                 .set('Accept', 'application/json')
                 .expect(400)
-                .then(res => {
-                    expect(res.body).to.eql({ error: 'lucyliu21 is not a valid comment id' });
-                    expect(res.body.error).to.equal('lucyliu21 is not a valid comment id');
-                });
+                .then(res => expect(res.body.error).to.equal('lucyliu21 is not a valid comment id'));
         });
     });
 
