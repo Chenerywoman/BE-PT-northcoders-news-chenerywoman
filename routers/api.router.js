@@ -7,13 +7,12 @@ const usersRouter = require('./users.router.js');
 const path = require('path');
 
 router.get('/', (req, res, next) => {
-    return res.sendFile(path.join(__dirname, '..','public/index.html'));
+    return res.sendFile(path.join(__dirname, '..', 'public/index.html'));
 });
-// GET /api - serves an HTML page with documentation for all the available endpoints
 
 router.use('/topics', topicsRouter);
 router.use('/articles', articlesRouter);
 router.use('/comments', commentsRouter);
-router.use('/users', usersRouter)
+router.use('/users', usersRouter);
 
 module.exports = router;
