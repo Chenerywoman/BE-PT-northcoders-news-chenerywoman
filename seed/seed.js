@@ -3,7 +3,6 @@ const { Topic, User, Article, Comment } = require('../models');
 
 exports.seed = (topicsData, usersData, articlesData, commentsData) => {
     return mongoose.connection.dropDatabase()
-
         .then(() => Promise.all([Topic.insertMany(topicsData), User.insertMany(usersData)]))
         .then(([topicsDocs, usersDocs]) => {
             const articles = articlesData.map(article => {
