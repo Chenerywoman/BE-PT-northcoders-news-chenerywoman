@@ -9,14 +9,14 @@ exports.getAllUsers = (req, res, next) => {
 exports.getUserProfileFromUserName = (req, res, next) => {
     return findUserByUserName(req.params.username)
   .then(user =>  {
-    if (user === null) throw {status: 404, message: 'username does not exist'};
+    if (!user) throw {status: 404, message: 'username does not exist'};
     else res.status(200).send({user})
   })
   .catch((err) => { 
     if (err.status === 404) return next(err);
     else return next({status: 500, message: 'server error'});
     });
-}
+};
 
 exports.getUserProfile = (req, res, next) => {
     return findUserById(req.params._id)
@@ -25,5 +25,5 @@ exports.getUserProfile = (req, res, next) => {
     if (err.name === 'CastError') return next({status: 400, message: 'please input a valid user id'});
     else return next({status: 500, message: 'server error'});
     });
-}
+};
 
