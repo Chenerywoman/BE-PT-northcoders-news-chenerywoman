@@ -3,7 +3,7 @@ const {findCommentById, updateCommentVote, deleteComment, findComments} = requir
 exports.getComments = (req, res, next) => {
   return findComments()
     .then(comments => res.status(200).send({comments}))
-    .catch(() =>  next({status: 500, message: 'server error - unable to delete'}));
+    .catch(() =>  next({status: 500, message: 'server error - unable get comments'}));
 };
 
 exports.getCommentById = (req, res, next) => {
