@@ -1,8 +1,8 @@
 const {User} = require('../models');
 
-exports.findAllUsers = () => User.find();
+exports.findAllUsers = () => User.find().lean();
 
-exports.findUserById = (id) => User.findById(id);
+exports.findUserById = (id) => User.findById(id).lean();
 
-exports.findUserByUserName = (username) => User.findOne({username});
+exports.findUserByUserName = (username) => User.findOne({username}).lean();
 
