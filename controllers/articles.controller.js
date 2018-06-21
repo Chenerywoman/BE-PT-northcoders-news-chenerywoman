@@ -12,7 +12,7 @@ async function countComments (article)  {
 exports.getAllArticles = (req, res, next) => {
   return findAllArticles()
   .then(articles => {
-   return Promise.all(articles.map(countComments))
+   return Promise.all(articles.map(countComments));
     })
   .then(articles => {
     return res.status(200).send({articles})
@@ -23,11 +23,7 @@ exports.getAllArticles = (req, res, next) => {
   
 exports.getArticlesById = (req, res, next) => {
   return findArticleById(req.params.article_id)
-  .then(article => Promise.all([article, countCommentsForArticle(article._id)]))
-  .then(([article, count]) =>  {
-        article.comments = count;
-        return article;
-    })
+  .then(article =>  countComments(article))
   .then(article =>  res.status(200).send({article}))
   .catch((err) => { 
     if (err.name === 'CastError') return next({status: 400, message: 'please input a valid article id'});
@@ -44,7 +40,7 @@ exports.getCommentsforArticle = (req, res, next) => {
       .catch(err => {
         if (err.status === 404) return next(err);
         else return next({status: 500, message: 'server error'});
-      })
+      });
   };
 
   exports.postNewCommentToArticle = (req, res, next) => {
@@ -70,6 +66,7 @@ exports.getCommentsforArticle = (req, res, next) => {
       // n.b. if invalid key or value put into query string parameter, just returns the original article unchanged
       return updateArticleVote(article._id, req.query.vote);
       })
+    .then(article => countComments(article))
     .then(article => res.status(200).send({updated_article: article}))
     .catch((err) => { 
       if (err.name === 'CastError' && err.model.modelName === 'articles') return next({ status: 400,  message: `${req.params.article_id} is not a valid article id`});

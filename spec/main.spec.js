@@ -203,7 +203,7 @@ describe('API endpoints', () => {
                 .expect(200)
                 .then(res => {
                     const { updated_article } = res.body;
-                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'comments', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[2].votes + 1);
                 });
         });
@@ -215,7 +215,7 @@ describe('API endpoints', () => {
                 .expect(200)
                 .then(res => {
                     const { updated_article } = res.body;
-                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'comments', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[2].votes - 1);
                 });
         });
@@ -235,7 +235,7 @@ describe('API endpoints', () => {
                 .expect(200)
                 .then(res => {
                     const { updated_article } = res.body;
-                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'comments', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[2].votes);
                 });
         });
@@ -247,7 +247,7 @@ describe('API endpoints', () => {
                 .expect(200)
                 .then(res => {
                     const { updated_article } = res.body;
-                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'title');
+                    expect(updated_article).to.have.keys('_id', 'created_by', 'body', 'comments', 'belongs_to', 'votes', '__v', 'title');
                     expect(updated_article.votes).to.equal(articleDocs[4].votes);
                 });
         });
@@ -345,7 +345,7 @@ describe('API endpoints', () => {
                     expect(comment._id).to.equal(commentDocs[4]._id.toString());
                     expect(comment.created_by._id).to.equal(commentDocs[4].created_by.toString());
                     expect(comment.body).to.equal(commentDocs[4].body);
-                    expect(comment.belongs_to._id).to.equal(commentDocs[4].belongs_to.toString());
+                    expect(comment.belongs_to._id).to.equal(`${commentDocs[4].belongs_to}`);
                     expect(comment.votes).to.equal(commentDocs[4].votes);
                     expect(comment.created_by).to.have.keys('_id', 'username');
                     expect(comment.belongs_to).to.have.keys('_id', 'title');
@@ -368,7 +368,6 @@ describe('API endpoints', () => {
                     const { updated_comment } = res.body;
                     expect(updated_comment.votes).to.equal(commentDocs[6].votes + 1);
                     expect(updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                    expect(updated_comment.votes).to.equal(17);
                 });
         });
         it('makes a PUT request to decrease the votes to api/comments:comment_id', () => {
@@ -381,7 +380,6 @@ describe('API endpoints', () => {
                     const { updated_comment } = res.body;
                     expect(updated_comment.votes).to.equal(commentDocs[6].votes - 1);
                     expect(updated_comment).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', '__v', 'created_at');
-                    expect(updated_comment.votes).to.equal(15);
                 });
         });
         it('responds with an appropriate error to a PUT request with an invalid comment id', () => {
