@@ -15,9 +15,10 @@ app.use(express.static('public'));
 
 app.use('/api', apiRouter);
 
-app.use((err, req, res, next) => {
-  res.status !== 500 ? res.status(err.status).send({error: err.message}) : res.status(500).send({error: err.message});
-  //error: `sorry couldnt find err.controller`
+app.use((err, req, res, next) => {                                      
+  res.status !== 500 
+  ? res.status(err.status).send({error: err.message}) 
+  : res.status(500).send({error: `server error in ${err.controller}`});
 });
 
 module.exports = app;
