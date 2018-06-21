@@ -19,6 +19,10 @@
       "camelcase": "warn",
       "comma-spacing": "warn",
       "quotes": ["error", "single"]
-    }
+    },
+      "parserOptions": {
+          "ecmaVersion": 2017
+      }
+  
   }
   
