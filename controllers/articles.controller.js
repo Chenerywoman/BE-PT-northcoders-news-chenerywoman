@@ -1,7 +1,6 @@
 const {findAllArticles, findArticleById, updateArticleVote} = require('../queries/articles.queries');
 const {findCommentsForArticle, createComment, countCommentsForArticle} = require('../queries/comments.queries');
 const {findUserById} = require('../queries/users.queries');
-// get all articles: again just a preference but i would probably abstract the async function in the map, and then pass that function to the map instead
 
 async function countComments (article)  {
   const newArticle = Object.assign({}, article);
@@ -11,14 +10,9 @@ async function countComments (article)  {
 
 exports.getAllArticles = (req, res, next) => {
   return findAllArticles()
-  .then(articles => {
-   return Promise.all(articles.map(countComments));
-    })
-  .then(articles => {
-    return res.status(200).send({articles})
-  })
-  .catch(() =>  next({status: 500, message: 'server error: unable to find articles'}))
-  // {status: 500, controller: 'articles}
+  .then(articles => Promise.all(articles.map(countComments)))
+  .then(articles => res.status(200).send({articles}))
+  .catch(() =>  next({status: 500, controller: 'articles'}));
   };
   
 exports.getArticlesById = (req, res, next) => {
@@ -27,7 +21,7 @@ exports.getArticlesById = (req, res, next) => {
   .then(article =>  res.status(200).send({article}))
   .catch((err) => { 
     if (err.name === 'CastError') return next({status: 400, message: 'please input a valid article id'});
-    else return next({status: 500, message: 'server error'});
+    else return next({status: 500, controller: 'articles'});
     });
   };
 
@@ -39,7 +33,7 @@ exports.getCommentsforArticle = (req, res, next) => {
       })
       .catch(err => {
         if (err.status === 404) return next(err);
-        else return next({status: 500, message: 'server error'});
+        else return next({status: 500, controller: 'articles'});
       });
   };
 
@@ -56,20 +50,17 @@ exports.getCommentsforArticle = (req, res, next) => {
     .catch((err) => { 
       if (err.name === 'CastError' && err.model.modelName === 'articles') return next({ status: 400,  message: `${req.params.article_id} is not a valid article id`});
       else if (err.status === 400) return next(err);
-      else return next({status: 500, message: 'server error'});
+      else return next({status: 500, controller: 'articles'});
       });
 };
 
   exports.changeArticleVotes = (req, res, next) => {
     return findArticleById(req.params.article_id)
-    .then(article => {
-      // n.b. if invalid key or value put into query string parameter, just returns the original article unchanged
-      return updateArticleVote(article._id, req.query.vote);
-      })
+    .then(article => updateArticleVote(article._id, req.query.vote))
     .then(article => countComments(article))
     .then(article => res.status(200).send({updated_article: article}))
     .catch((err) => { 
       if (err.name === 'CastError' && err.model.modelName === 'articles') return next({ status: 400,  message: `${req.params.article_id} is not a valid article id`});
-      else return next({status: 500, message: 'server error'});
+      else return next({status: 500, controller: 'articles'});
       });
 };
