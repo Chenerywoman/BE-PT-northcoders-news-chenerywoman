@@ -1,23 +1,28 @@
 const {findAllArticles, findArticleById, updateArticleVote} = require('../queries/articles.queries');
 const {findCommentsForArticle, createComment, countCommentsForArticle} = require('../queries/comments.queries');
 const {findUserById} = require('../queries/users.queries');
+// get all articles: again just a preference but i would probably abstract the async function in the map, and then pass that function to the map instead
+
+async function countComments (article)  {
+  const newArticle = Object.assign({}, article);
+  newArticle.comments = await countCommentsForArticle(article._id);
+ return newArticle;
+}
 
 exports.getAllArticles = (req, res, next) => {
   return findAllArticles()
   .then(articles => {
-   return Promise.all(articles.map(async article => {
-      article.comments = await countCommentsForArticle(article._id);
-      return article;
-    }))
-  })
+   return Promise.all(articles.map(countComments))
+    })
   .then(articles => {
     return res.status(200).send({articles})
   })
-  .catch((err) =>  next({status: 500, message: 'server error: unable to find articles'}))
+  .catch(() =>  next({status: 500, message: 'server error: unable to find articles'}))
+  // {status: 500, controller: 'articles}
   };
   
 exports.getArticlesById = (req, res, next) => {
-  return findArticleById(req.params.article_id).lean()
+  return findArticleById(req.params.article_id)
   .then(article => Promise.all([article, countCommentsForArticle(article._id)]))
   .then(([article, count]) =>  {
         article.comments = count;
