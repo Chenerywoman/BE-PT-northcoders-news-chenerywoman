@@ -10,6 +10,10 @@ mongoose.connect(url);
 
 app.use(json());
 
+app.get('/', function(req,res) {
+  return res.status(200).send('please see /api for list of routes');
+});
+
 app.use(express.static('public'));
 
 app.use('/api', apiRouter);
