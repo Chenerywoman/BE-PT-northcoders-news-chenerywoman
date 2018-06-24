@@ -5,8 +5,8 @@ const { getUserProfileFromUserName, getAllUsers, getUserProfile } = require('../
 
 router.get('/', getAllUsers);
 
-router.get('/username/:username', getUserProfileFromUserName);
+router.get('/:username', getUserProfileFromUserName);
 
-router.get('/:_id', getUserProfile);
+router.get('/id/:_id', getUserProfile);
 
 module.exports = router;
