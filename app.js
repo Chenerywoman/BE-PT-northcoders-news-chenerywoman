@@ -1,4 +1,3 @@
-// checks the node environment and sets it to dev if undefined
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev' ;
 const mongoose = require('mongoose');
 const express = require('express');
