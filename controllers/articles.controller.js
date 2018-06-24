@@ -1,6 +1,6 @@
 const {findAllArticles, findArticleById, updateArticleVote} = require('../queries/articles.queries');
 const {findCommentsForArticle, createComment, countCommentsForArticle} = require('../queries/comments.queries');
-const {findUserById} = require('../queries/users.queries');
+const {findUserById, findUserByUserName} = require('../queries/users.queries');
 
 async function countComments (article)  {
   const newArticle = Object.assign({}, article);
@@ -38,9 +38,10 @@ exports.getCommentsforArticle = (req, res, next) => {
   };
 
   exports.postNewCommentToArticle = (req, res, next) => {
+    const userId = req.body.created_by ? req.body.created_by : findUserByUserName('tickle122')._id;
     return findArticleById(req.params.article_id)
     .then(article => {
-      return Promise.all([article, findUserById(req.body.created_by)]);
+      return Promise.all([article, findUserById(userId)]);
     })
     .then(([article, user]) => {
        if (!user) throw {status: 400, message: `${req.body.created_by} is not a valid user id`}
