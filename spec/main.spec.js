@@ -258,7 +258,7 @@ describe('API endpoints', () => {
         });
         it('GETs a user by username from api/users/username/:username', () => {
             return request
-                .get(`/api/users/username/${userDocs[1].username}`)
+                .get(`/api/users/${userDocs[1].username}`)
                 .expect(200)
                 .then(res => {
                     const { user } = res.body;
@@ -272,13 +272,13 @@ describe('API endpoints', () => {
         });
         it('returns an appropriate error message if non-existent username inputted', () => {
             return request
-                .get('/api/users/username/3339999222')
+                .get('/api/users/3339999222')
                 .expect(404)
                 .then(res => expect(res.body.error).to.equal('username does not exist'));
         });
-        it('GETs a user by id from api/users:id', () => {
+        it('GETs a user by id from api/users/id/:id', () => {
             return request
-                .get(`/api/users/${userDocs[1]._id}`)
+                .get(`/api/users/id/${userDocs[1]._id}`)
                 .expect(200)
                 .then(res => {
                     const { user } = res.body;
@@ -291,7 +291,7 @@ describe('API endpoints', () => {
         });
         it('returns an appropriate error message if non-existent id inputted', () => {
             return request
-                .get('/api/users/banana')
+                .get('/api/users/id/banana')
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('please input a valid user id'));
         });
