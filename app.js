@@ -10,7 +10,7 @@ mongoose.connect(url);
 
 app.use(json());
 
-app.get('/', function(req,res) {
+app.get('/', function(req, res) {
   return res.status(200).send('please see /api for list of routes');
 });
 
