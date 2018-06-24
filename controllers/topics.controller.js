@@ -1,5 +1,5 @@
 const {findAllTopics, findTopicById, findArticlesByTopicId} = require('../queries/topics.queries');
-const {findUserById} = require('../queries/users.queries');
+const {findUserById, findUserByUserName} = require('../queries/users.queries');
 const {createArticle} = require('../queries/articles.queries');
 
 exports.getAllTopics = (req, res, next) => {
@@ -23,8 +23,9 @@ exports.getArticlesByTopicId = (req, res, next) => {
 }; 
 
 exports.postNewArticleToTopic = (req, res, next) => {
+  const userId = req.body.created_by ? req.body.created_by : findUserByUserName('tickle122')._id;
   return findTopicById(req.params.topic_id)
-  .then(topic =>  Promise.all([topic, findUserById(req.body.created_by)]))
+  .then(topic =>  Promise.all([topic, findUserById(userId)]))
     // change to a specific default user rather than using one - object posting wouldn't have the created_by
   .then(([topic, user]) => createArticle(req.body.title, req.body.body, topic._id, user._id))
   .then(article => res.status(201).send({new_article: article}))
