@@ -41,9 +41,7 @@ exports.getCommentsforArticle = (req, res, next) => {
   const user = await findUserByUserName('tickle122')
   const userId = req.body.created_by ? req.body.created_by : user._id;
     return Promise.all([findArticleById(req.params.article_id), userId])
-    .then(([article, userId]) => {
-      return Promise.all([article, findUserById(userId)]);
-    })
+    .then(([article, userId]) => Promise.all([article, findUserById(userId)]))
     .then(([article, user]) => {
        if (!user) throw {status: 400, message: `${req.body.created_by} is not a valid user id`}
        return Promise.all([createComment(req.body.comment, article._id, user._id ), user]);
