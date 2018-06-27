@@ -28,7 +28,6 @@ exports.postNewArticleToTopic = async (req, res, next) => {
   return Promise.all([findTopicById(req.params.topic_id), userId])
   .then(([topic, userId]) =>  Promise.all([topic, findUserById(userId)]))
   .then(([topic, user]) => {
-    console.log('topic', topic, 'user', user)
     return Promise.all([createArticle(req.body.title, req.body.body, topic._id, user._id), user]);})
   .then(([article, user]) => res.status(201).send({new_article: {...article.toObject(), created_by: user}}))
   .catch((err) => { 
