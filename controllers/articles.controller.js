@@ -37,17 +37,18 @@ exports.getCommentsforArticle = (req, res, next) => {
       });
   };
 
-  exports.postNewCommentToArticle = (req, res, next) => {
-    const userId = req.body.created_by ? req.body.created_by : findUserByUserName('tickle122')._id;
-    return findArticleById(req.params.article_id)
-    .then(article => {
+  exports.postNewCommentToArticle = async (req, res, next) => {
+  const user = await findUserByUserName('tickle122')
+  const userId = req.body.created_by ? req.body.created_by : user._id;
+    return Promise.all([findArticleById(req.params.article_id), userId])
+    .then(([article, userId]) => {
       return Promise.all([article, findUserById(userId)]);
     })
     .then(([article, user]) => {
        if (!user) throw {status: 400, message: `${req.body.created_by} is not a valid user id`}
-       return createComment(req.body.body, article._id, user._id );
+       return Promise.all([createComment(req.body.comment, article._id, user._id ), user]);
     })
-    .then(comment => res.status(201).send({new_comment: comment}))
+    .then(([comment, user]) => res.status(201).send({new_comment: {...comment.toObject(), created_by: user}}))
     .catch((err) => { 
       if (err.name === 'CastError' && err.model.modelName === 'articles') return next({ status: 400,  message: `${req.params.article_id} is not a valid article id`});
       else if (err.status === 400) return next(err);
