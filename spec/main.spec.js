@@ -67,7 +67,7 @@ describe('API endpoints', () => {
                     const { new_article } = res.body;
                     expect(new_article.title).to.equal(newArticle.title);
                     expect(new_article.body).to.equal(newArticle.body);
-                    expect(new_article.created_by).to.equal(`${newArticle.created_by}`);
+                    expect(new_article.created_by._id).to.equal(`${newArticle.created_by}`);
                     expect(new_article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
                 });
         });
