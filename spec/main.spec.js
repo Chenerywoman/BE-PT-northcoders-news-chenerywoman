@@ -41,7 +41,7 @@ describe('API endpoints', () => {
                     expect(articles[0].title).to.equal(articleDocs[0].title);
                     expect(articles[0].body).to.equal(articleDocs[0].body);
                     expect(articles[0].belongs_to._id).to.equal(`${articleDocs[0].belongs_to}`);
-                    expect(articles[0]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes');
+                    expect(articles[0]).to.have.keys('_id', 'title', 'created_by', 'body', 'comments', 'belongs_to', 'votes');
                 });
         });
         it('returns an appropriate error message if an invalid topic id inputted as a parameter', () => {
