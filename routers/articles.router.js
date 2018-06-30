@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAllArticles, getArticlesById, getCommentsforArticle, postNewCommentToArticle, changeArticleVotes} = require('../controllers/articles.controller');
+const { getAllArticles, getArticleById, getCommentsforArticle, postNewCommentToArticle, changeArticleVotes} = require('../controllers/articles.controller');
 
 router.route('/')
 .get(getAllArticles);
 
 router.route('/:article_id')
-.get(getArticlesById)
+.get(getArticleById)
 .put(changeArticleVotes);
 
 router.route('/:article_id/comments')
