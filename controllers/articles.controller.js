@@ -2,11 +2,13 @@ const {findAllArticles, findArticleById, updateArticleVote} = require('../querie
 const {findCommentsForArticle, createComment, countCommentsForArticle} = require('../queries/comments.queries');
 const {findUserById, findUserByUserName} = require('../queries/users.queries');
 
-async function countComments (article)  {
+ async function countComments (article)  {
   const newArticle = Object.assign({}, article);
   newArticle.comments = await countCommentsForArticle(article._id);
  return newArticle;
 }
+
+exports.countComments = countComments
 
 exports.getAllArticles = (req, res, next) => {
   return findAllArticles()
@@ -15,7 +17,7 @@ exports.getAllArticles = (req, res, next) => {
   .catch(() =>  next({status: 500, controller: 'articles'}));
   };
   
-exports.getArticlesById = (req, res, next) => {
+exports.getArticleById = (req, res, next) => {
   return findArticleById(req.params.article_id)
   .then(article =>  countComments(article))
   .then(article =>  res.status(200).send({article}))
