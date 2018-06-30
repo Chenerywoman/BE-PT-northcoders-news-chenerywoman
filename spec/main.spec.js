@@ -42,6 +42,9 @@ describe('API endpoints', () => {
                     expect(articles[0].body).to.equal(articleDocs[0].body);
                     expect(articles[0].belongs_to._id).to.equal(`${articleDocs[0].belongs_to}`);
                     expect(articles[0]).to.have.keys('_id', 'title', 'created_by', 'body', 'comments', 'belongs_to', 'votes');
+                    expect(articles[0].created_by).to.have.keys('_id', 'username', 'avatar_url');
+                    expect(articles[0].belongs_to).to.have.keys('_id', 'title');
+                    expect(articles[0].comments).to.be.a('number');
                 });
         });
         it('returns an appropriate error message if an invalid topic id inputted as a parameter', () => {
@@ -102,7 +105,7 @@ describe('API endpoints', () => {
                     expect(articles[3].body).to.equal(articleDocs[3].body);
                     expect(articles[3].belongs_to._id).to.equal(`${articleDocs[3].belongs_to}`);
                     expect(articles[3]).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', 'comments');
-                    expect(articles[3].created_by).to.have.keys('_id', 'username');
+                    expect(articles[3].created_by).to.have.keys('_id', 'username', 'avatar_url');
                     expect(articles[3].belongs_to).to.have.keys('_id', 'title');
                     expect(articles[3].comments).to.be.a('number');
                 });
@@ -120,7 +123,7 @@ describe('API endpoints', () => {
                     expect(article.belongs_to._id).to.equal(`${articleDocs[1].belongs_to}`);
                     expect(article.votes).to.equal(articleDocs[1].votes);
                     expect(article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', 'comments');
-                    expect(article.created_by).to.have.keys('_id', 'username');
+                    expect(article.created_by).to.have.keys('_id', 'username', 'avatar_url');
                     expect(article.belongs_to).to.have.keys('_id', 'title');
                 });
         });
@@ -143,7 +146,7 @@ describe('API endpoints', () => {
                     expect(comments[0].belongs_to._id).to.equal(`${commentDocs[2].belongs_to}`);
                     expect(comments[0].votes).to.equal(commentDocs[2].votes);
                     expect(comments[0]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
-                    expect(comments[0].created_by).to.have.keys('_id', 'username');
+                    expect(comments[0].created_by).to.have.keys('_id', 'username', 'avatar_url');
                     expect(comments[0].belongs_to).to.have.keys('_id', 'title');
                 });
         });
@@ -313,7 +316,7 @@ describe('API endpoints', () => {
                     expect(comments[3].votes).to.equal(commentDocs[3].votes);
                     expect(comments[3].belongs_to).to.have.keys('_id', 'title');
                     expect(comments[3]).to.have.keys('_id', 'created_by', 'body', 'belongs_to', 'votes', 'created_at');
-                    expect(comments[3].created_by).to.have.keys('_id', 'username');
+                    expect(comments[3].created_by).to.have.keys('_id', 'username', 'avatar_url');
                     expect(comments[3].belongs_to).to.have.keys('_id', 'title');
                 });
         });
@@ -330,7 +333,7 @@ describe('API endpoints', () => {
                     expect(comment.body).to.equal(commentDocs[4].body);
                     expect(comment.belongs_to._id).to.equal(`${commentDocs[4].belongs_to}`);
                     expect(comment.votes).to.equal(commentDocs[4].votes);
-                    expect(comment.created_by).to.have.keys('_id', 'username');
+                    expect(comment.created_by).to.have.keys('_id', 'username', 'avatar_url');
                     expect(comment.belongs_to).to.have.keys('_id', 'title');
                 });
         });
