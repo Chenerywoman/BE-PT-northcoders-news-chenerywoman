@@ -10,6 +10,7 @@ router.get('/', (req, res, next) => {
     return res.sendFile(path.join(__dirname, '..', 'public/index.html'));
 });
 
+router.use('/', (req, res, next) => res.sendFile(path.join(__dirname, '..', 'public/index.html')));
 router.use('/topics', topicsRouter);
 router.use('/articles', articlesRouter);
 router.use('/comments', commentsRouter);
