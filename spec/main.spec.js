@@ -60,7 +60,7 @@ describe('API endpoints', () => {
                 .then(res => expect(res.body.error).to.equal(`there are no articles for the topic with id ${topicDocs[2]._id}`));
         });
         it('POSTs a new article to api/topics:topic_id/articles', () => {
-            const newArticle = { title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: userDocs[1]._id };
+            const newArticle = { title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: userDocs[1].username };
             return request
                 .post(`/api/topics/${topicDocs[2]._id}/articles`)
                 .set('Accept', 'application/json')
@@ -70,7 +70,7 @@ describe('API endpoints', () => {
                     const { new_article } = res.body;
                     expect(new_article.title).to.equal(newArticle.title);
                     expect(new_article.body).to.equal(newArticle.body);
-                    expect(new_article.created_by._id).to.equal(`${newArticle.created_by}`);
+                    expect(new_article.created_by.username).to.equal(`${newArticle.created_by}`);
                     expect(new_article).to.have.keys('_id', 'title', 'created_by', 'body', 'belongs_to', 'votes', '__v');
                 });
         });
@@ -82,13 +82,13 @@ describe('API endpoints', () => {
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('banana is not a valid topic id'));
         });
-        it('responds with an appropriate error to a POST request if an invalid user id is passed as in the request body', () => {
+        it('responds with an appropriate error to a POST request if an invalid username is passed as in the request body', () => {
             return request
                 .post(`/api/topics/${topicDocs[2]._id}/articles`)
                 .set('Accept', 'application/json')
                 .send({ title: 'Why I love Penguins', body: 'blah, blah, Penguins, blah, more penguins, love them', created_by: 'matilda' })
                 .expect(400)
-                .then(res => expect(res.body.error).to.equal('matilda is not a valid user id'));
+                .then(res => expect(res.body.error).to.equal('matilda is not a valid username'));
         });
     });
 

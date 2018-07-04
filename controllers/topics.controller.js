@@ -27,17 +27,18 @@ exports.getArticlesByTopicId = (req, res, next) => {
 };
 
 exports.postNewArticleToTopic = async (req, res, next) => {
-  const user = await findUserByUserName('tickle122');
-  const userId = req.body.created_by ? req.body.created_by : user._id;
-  return Promise.all([findTopicById(req.params.topic_id), userId])
-    .then(([topic, userId]) => Promise.all([topic, findUserById(userId)]))
+  
+  const userName = req.body.created_by ? req.body.created_by : 'tickle122';
+  
+  return Promise.all([findTopicById(req.params.topic_id), findUserByUserName(userName)])
     .then(([topic, user]) => {
+      if (!user) throw { status: 400, message: `${req.body.created_by} is not a valid username` }
       return Promise.all([createArticle(req.body.title, req.body.body, topic._id, user._id), user]);
     })
     .then(([article, user]) => res.status(201).send({ new_article: { ...article.toObject(), created_by: user } }))
     .catch((err) => {
       if (err.name === 'CastError' && err.model.modelName === 'topics') return next({ status: 400, message: `${req.params.topic_id} is not a valid topic id` });
-      else if (err.name === 'CastError' && err.model.modelName === 'users') return next({ status: 400, message: `${req.body.created_by} is not a valid user id` });
+      else if (err.status === 400) return next(err);
       else return next({ status: 500, controller: 'topics' });
     });
 };
