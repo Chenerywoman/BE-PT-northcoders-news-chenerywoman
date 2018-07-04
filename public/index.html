@@ -9,7 +9,7 @@
         <h2>api/topics</h2>
         <ul>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/topics</span></span></li> 
-            <li>Gets all the topics</li>
+            <li>Returns all the topics</li>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/topics/:topic_id/articles</span></span></li> 
             <li>Returns all the articles for a certain topic</li>
             <li class="api"><span class="endpoint"><span class="http">POST</span> <span class="route">/api/topics/:topic_id/articles</span></span> </li>  
@@ -24,7 +24,7 @@
             <li class="api"><span class="endpoint"><span class="http">GET</span>  <span class="route">/api/articles/:article_id</span></span></li>
             <li>Gets an individual article</li>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/articles/:article_id/comments</span> </span></li>
-            <li> Gets all the comments for a individual article</li>
+            <li> Returns all the comments for a individual article</li>
             <li class="api"><span class="endpoint"><span class="http">POST</span> <span class="route">/api/articles/:article_id/comments</span> </span></li>
             <li> Adds a new comment to an article. This route requires a JSON body with
                 a comment key and value pair e.g: {"comment": "This is my new comment"}</li>
@@ -35,7 +35,7 @@
         <h2>api/comments</h2>
         <ul>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/comments</span></span> </li>
-            <li> Gets all the comments</li>
+            <li> Returns all the comments</li>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/comments/:comment_id</span></span></li>
             <li> Gets a comment by its id</li>
             <li class="api"><span class="endpoint"><span class="http">PUT</span> <span class="route">/api/comments/:comment_id</span></span></li>
@@ -46,6 +46,8 @@
         </ul>
         <h2>api/users</h2>
         <ul>
+            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/users</span> </span></li>
+            <li> Gets all the users.</li>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/users/:username</span> </span></li>
             <li> Returns a JSON object with the profile data for the specified user.</li>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/users/id/:id</span> </span></li>
