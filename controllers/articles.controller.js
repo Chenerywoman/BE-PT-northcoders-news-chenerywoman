@@ -48,9 +48,7 @@ exports.postNewCommentToArticle = async (req, res, next) => {
       if (!user) throw { status: 400, message: `${req.body.created_by} is not a valid username` }
       return Promise.all([createComment(req.body.comment, article._id, user._id), user]);
     })
-    .then(([comment, user]) => {
-      return res.status(201).send({ new_comment: { ...comment.toObject(), created_by: user } })
-})
+    .then(([comment, user]) => res.status(201).send({ new_comment: { ...comment.toObject(), created_by: user } }))
     .catch((err) => {
       if (err.name === 'CastError' && err.model.modelName === 'articles') return next({ status: 400, message: `${req.params.article_id} is not a valid article id` });
       else if (err.status === 400) return next(err);
