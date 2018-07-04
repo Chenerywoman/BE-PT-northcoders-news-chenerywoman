@@ -6,11 +6,8 @@ const commentsRouter = require('./comments.router');
 const usersRouter = require('./users.router.js');
 const path = require('path');
 
-router.get('/', (req, res, next) => {
-    return res.sendFile(path.join(__dirname, '..', 'public/index.html'));
-});
+router.get('/', (req, res, next) => res.sendFile(path.join(__dirname, '..', 'public/index.html')));
 
-router.use('/', (req, res, next) => res.sendFile(path.join(__dirname, '..', 'public/index.html')));
 router.use('/topics', topicsRouter);
 router.use('/articles', articlesRouter);
 router.use('/comments', commentsRouter);
