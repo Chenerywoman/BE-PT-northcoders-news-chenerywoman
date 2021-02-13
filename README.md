@@ -2,7 +2,7 @@
 
 https://chenerywoman-northcoders-news.herokuapp.com/api
 
-This NorthCoders News javascript project is a RESTful express API which responds to different HTTP requests to various /api endpoints with (arrays of) JSON objects about users, topics, artices & comments. It uses the Express npm package in the Node environment to run a server which connects to a MongoDB database using the Mongoose library.  The database connected to is either northcoders_news or northcoders_news_test, depending on whether the project is running in the test or dev environment.  
+This NorthCoders News javascript project is a RESTful express API which responds to different HTTP requests to various /api endpoints with (arrays of) JSON objects about users, topics, articles & comments. It uses the Express npm package in the Node environment to run a server which connects to a MongoDB database using the Mongoose library.  The database connected to is either northcoders_news or northcoders_news_test, depending on whether the project is running in the test or dev environment.  
 
 ## Getting Started
 
